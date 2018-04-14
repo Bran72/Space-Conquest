@@ -1,0 +1,41 @@
+{% extends 'home.html.twig' %}
+
+{% block scripts %}
+    <script type="text/javascript" href="{{ asset('assets/js/serveur.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="content">
+        <h1>Bienvenue sur le tchat MMI S4</h1>
+
+        <p>
+            <input type="text" id="monPseudo" placeholder="Votre pseudo">
+            <input type="text" id="monImage" placeholder="Rentrer un url">
+            <input type="text" id="monMessage" placeholder="Votre message...">
+            <button onclick="envoyer()">Envoyer</button>
+        </p>
+
+        <br><br>
+
+        <p id="messages"></p>
+    </div>
+
+    <script src="{{ asset('tchat/socket.io.js') }}"></script>
+    <script>
+        var socket = io.connect('http://localhost:8080');
+        function envoyer(){
+            var pseudo = {{ user }};
+            var image = document.getElementById("monImage").value;
+
+            socket.on('serveurversclient', function(texte){
+                document.getElementById("messages").innerHTML=texte;
+            });
+
+            var leMessage = '<img src="'+image+'" style="width: 50px;">'+pseudo+': '+ document.getElementById("monMessage").value;
+            socket.emit('clientversserveur', leMessage);
+            document.getElementById("monMessage").value="";
+        }
+
+
+    </script>
+{% endblock %}

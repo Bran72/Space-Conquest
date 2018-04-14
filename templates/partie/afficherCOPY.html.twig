@@ -1,0 +1,351 @@
+{% extends 'game.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styleCard.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <body>
+<div class="content">
+    <div class="content-card">
+
+    </div>
+    <div class="control">
+        <button class="draw-7">Draw 7 cards</button>
+        <button class="draw-1")>Draw 1 card</button>
+    </div>
+    <img class="card-stack" src="{{ asset('assets/images/dos_pioche/carte_back.png') }}">
+    <div class="actions">
+        <div class="actions-item actions-item-1">
+            <div class="thumb-zone">
+                <div class="thumb-item"></div>
+            </div>
+        </div>
+        <div class="actions-item actions-item-2">
+            <div class="thumb-zone">
+                <div class="thumb-item"></div>
+                <div class="thumb-item"></div>
+            </div>
+        </div>
+        <div class="actions-item actions-item-3"></div>
+        <div class="actions-item actions-item-4"></div>
+    </div>
+    <div class="hand">
+
+    </div>
+</div>
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSPlugin.min.js"></script>
+
+<script>
+
+    $(document).ready(function(){
+
+        var next;
+        var cardId;
+        var endAnim;
+        var newLeft;
+        var newTop;
+        var time;
+        var midCount;
+        var newDeg;
+        var topDecay;
+        var takenId;
+        var	takenBy;
+        var dropId;
+
+        takenBy = [];
+        midCount = 0;
+        count = 0;
+        endAnim = 1;
+        next = 0;
+
+        function updatePos(time){
+            $('.handed').each(function(){
+                cardId = $(this).index();
+                midCount = ($('.card').length) / 2;
+                newDeg = -(3 * (midCount - cardId));
+                topDecay = -50 + (5 * Math.abs((midCount - cardId) - 0.5));
+                TweenMax.to($('.hand-elem').eq(cardId), 0, {yPercent: (topDecay+50)+'%'});
+                newLeft = ($('.hand-elem').eq(cardId).offset().left - $('.content-card').offset().left) + (($('.hand-elem').width()) / 2) - 100;
+                newTop = ($('.hand-elem').eq(cardId).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 100;
+                TweenMax.to($(this), time,{left: newLeft+'px', top: newTop+'px', height: '220px'});
+                TweenMax.to($(this).find('.card-anim'), time, {transform: 'rotateZ('+newDeg+'deg)', xPercent: '-50%', top: '0'});
+            });
+        }
+        function createCard(){
+            $('.content-card').prepend('<div class="card"><div class="card-anim">{% if(user.id == joueur1.id) %}\n'+
+                '            {% for carte in partie.J1Main %}\n'+
+                '                <div class="card">\n'+
+                '                    <div class="card-anim">\n'+
+                '                        <img class="card-face" src="{{ asset('assets/images/carte_objet/') }}{{ objets[carte].image }}" style="width: 100px"><img class="card-back" src="{{ asset('assets/images/dos_pioche/carte_back.png') }}">\n' +
+                '                    </div>\n' +
+                '                </div>\n' +
+                '            {% endfor %}\n'+
+                '        {% elseif(user.id == joueur2.id) %}\n'+
+                '            {% for carte in partie.J2Main %}\n'+
+                '                <div class="card">\n'+
+                '                    <div class="card-anim">\n'+
+                '                        <img class="card-face" src="{{ asset('assets/images/carte_objet/') }}{{ objets[carte].image }}" style="width: 100px"><img class="card-back" src="{{ asset('assets/images/dos_pioche/carte_back.png') }}">\n' +
+                '                    </div>\n' +
+                '                </div>\n' +
+                '            {% endfor %}\n' +
+                '        {% endif %}</div></div>');            $('.hand').append('<div class="hand-elem"></div>');
+            $('.card').draggable();
+            $('.card').first().addClass('handed');
+            cardId = $('.hand-elem').first().index();
+            newLeft = ($('.hand-elem').first().offset().left - $('.content-card').offset().left) + (($('.hand-elem').width()) / 2) - 100;
+            newTop = ($('.hand-elem').first().offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 250;
+
+            updatePos(0.5);
+            TweenMax.to($('.card').first(), 1, {left: newLeft+'px', top: newTop+'px', transform: 'translateY(0) rotateY(0)'});
+            updatePos(0.5);
+        }
+
+        $(window).resize(function(){
+            $('.drop-item').each(function(){
+                dropId = $('.drop-item').index(this);
+                newLeft = ($(this).offset().left - $('.content-card').offset().left);
+                newTop = ($(this).offset().top - $('.content-card').offset().top);
+                TweenMax.to($('.card').eq(takenBy[$(this).index()]), 0,{left: newLeft+'px', top: newTop+'px'});
+            });
+            updatePos(0);
+        });
+
+
+        $(document).on('mouseover', '.handed', function(){
+            if($(this).is('.ui-draggable-dragging')){
+
+            }
+            else{
+                cardId = $(this).index();
+                TweenMax.to($(this), 0.1,{top: '-=50px',height: '300px'});
+                TweenMax.to($(this).find('.card-anim'), 0.1,{transform: 'rotateZ(0deg) scale(1.2)', xPercent: '-50%'});
+                $(this).css('z-index','1');
+                $('.card').not(this).css('pointer-events', 'auto');
+                console.log(cardId);
+            }
+        });
+
+        $(document).on('mouseout', '.handed', function(){
+            if($(this).is('.ui-draggable-dragging')){
+
+            }
+            else{
+                cardId = $(this).index();
+                midCount = ($('.card').length) / 2;
+                newDeg = -(3 * (midCount - cardId));
+                topDecay = -50 + (5 * Math.abs((midCount - cardId) - 0.5));
+
+                newTop = ($('.hand-elem').eq(cardId).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 100;
+                TweenMax.to($(this), 0.2,{top: newTop+'px',height: '220px'});
+                TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ('+newDeg+'deg) scale(1)', xPercent: '-50%'});
+                $(this).css('z-index','0');
+                $('.card').not(this).css('pointer-events', 'auto');
+            }
+        });
+
+        $(document).on('mousedown', '.handed', function(){
+            TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ(0deg) scale(0.7)', xPercent: '-50%'});
+            $('.card').not(this).css('pointer-events', 'none');
+            $(this).css('z-index','1');
+        });
+        $(document).on('mouseup', '.handed', function(){
+            TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ(0deg) scale(1.2)', xPercent: '-50%'});
+            $('.card').not(this).css('pointer-events', 'auto');
+        });
+
+        $(document).on('dragstart', '.card', function(){
+            $(this).addClass('handed').removeClass('placed').css('z-index','1');
+        });
+
+        $(document).on('dragstop', '.handed', function(){
+            cardId = $(this).index();
+            midCount = ($('.card').length) / 2;
+            newDeg = -(3 * (midCount - cardId));
+            topDecay = -50 + (5 * Math.abs((midCount - cardId) - 0.5));
+            console.log(cardId);
+
+            TweenMax.to($('.hand-elem').eq(cardId), 0, {yPercent: (topDecay+50)+'%'});
+            newLeft = ($('.hand-elem').eq(cardId).offset().left - $('.content-card').offset().left) + (($('.hand-elem').width()) / 2) - 100;
+            newTop = ($('.hand-elem').eq(cardId).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 100;
+            TweenMax.to($(this), 0.2,{left: newLeft+'px', top: newTop+'px',height: '220px', width: '150px'});
+            TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ('+newDeg+'deg) scale(1)', xPercent: '-50%', top: '0'});
+            $(this).css('z-index','0');
+            $('.card').not(this).css('pointer-events', 'auto');
+
+        });
+
+
+        $('.draw-7').click(function(){
+            if(endAnim == 1){
+                next = 0;
+                var drawAnim = setInterval(function(){
+                    createCard();
+                    next++;
+                    if(next >= 7){
+                        clearInterval(drawAnim);
+                    }
+                }, 300);
+            }
+        });
+
+        $('.draw-1').click(function(){
+            if(endAnim == 1){
+                createCard();
+            }
+
+        });
+
+        $(function(){
+            $('.drop-item').droppable({
+                out: function(){
+                    $(this).droppable('option', 'accept', '.card');
+                }
+            });
+        });
+
+
+        $(document).on('drop', '.drop-item', function(){
+            newLeft = ($(this).offset().left - $('.content-card').offset().left);
+            newTop = ($(this).offset().top - $('.content-card').offset().top);
+            takenId = $('.ui-draggable-dragging').index();
+            takenBy[$(this).index()] = takenId;
+            $(this).droppable('option', 'accept', $('.card').eq(takenId));
+            TweenMax.to($('.ui-draggable-dragging'), 0.2,{left: newLeft+'px', top: newTop+'px', height: '155px', width: '120px'});
+            TweenMax.to($('.ui-draggable-dragging').find('.card-anim'), 0.2,{transform: 'rotateZ(0deg) scale(1)', xPercent: '-50%'});
+            $('.ui-draggable-dragging').removeClass('handed').addClass('placed').css('z-index','0');
+            $('.handed').css('pointer-events', 'auto');
+        });
+
+
+
+
+        $(document).on('click', '.action-1 .action-validate', function(){
+            $('.action').remove();
+            $('.placed').draggable('disable');
+            var defausseComplete = function(){
+                $('.placed').removeClass().addClass('card-thumbnail card-thumbnail-1');
+                $('.card-thumbnail-1').appendTo('.actions');
+                $('.card-thumbnail-1').each(function(){
+                    cardId = $('.card-thumbnail-1').index(this);
+                    newLeft = ($('.actions-item-1 .thumb-item').eq(cardId).offset().left - $('.actions').offset().left) + ($('.actions-item-1 .thumb-item').eq(cardId).width() / 2);
+                    newTop = ($('.actions-item-1 .thumb-item').eq(cardId).offset().top - $('.actions').offset().top);
+                    console.log(newLeft);
+                    TweenMax.to($(this), 0,{left: newLeft+'px', top: newTop+'px'});
+                });
+                console.log('slt c moi');
+                updatePos(0.2);
+                $('.drop-item').droppable('option', 'accept', '.card');
+            };
+            var defausseStart = function(){
+                $('.placed').each(function(){
+                    cardId = $('.placed').index(this);
+                    $('.hand-elem').eq(cardId).remove();
+                    newLeft = ($('.actions-item-1 .thumb-item').eq(cardId).offset().left - $('.content-card').offset().left) + ($('.actions-item-1 .thumb-item').eq(cardId).width() / 2);
+                    newTop = ($('.actions-item-1 .thumb-item').eq(cardId).offset().top - $('.content-card').offset().top);
+                    TweenMax.to($(this), 0.5,{left: newLeft+'px', top: newTop+'px', height: '40px', width: '30px', xPercent: '-50%', onComplete: defausseComplete});
+                });
+            }
+            var tl = new TimelineLite();
+            tl.to($('.placed').find('.card-anim'), 0.5,{transform: 'scale(1.4)', xPercent: '-50%'});
+            tl.to($('.placed').find('.card-anim'), 0.5,{transform: 'scale(1.4) rotateY(180deg)', xPercent: '-50%'});
+            tl.to($('.placed'), 0.3,{ease: Circ.easeInOut, top: '-=40px', left: '-=70px', onComplete: defausseStart});
+            tl.play();
+        });
+
+
+        $(document).on('click', '.action-2 .action-validate', function(){
+            $('.action').remove();
+            $('.placed').draggable('disable');
+            var defausseComplete = function(){
+                $('.placed').removeClass().addClass('card-thumbnail card-thumbnail-2');
+                $('.card-thumbnail-2').appendTo('.actions');
+                $('.card-thumbnail-2').each(function(){
+                    cardId = $('.card-thumbnail-2').index(this);
+                    newLeft = ($('.actions-item-2 .thumb-item').eq(cardId).offset().left - $('.actions').offset().left) + ($('.actions-item-2 .thumb-item').eq(cardId).width() / 2);
+                    newTop = ($('.actions-item-2 .thumb-item').eq(cardId).offset().top - $('.actions').offset().top);
+                    console.log(newLeft);
+                    TweenMax.to($(this), 0,{left: newLeft+'px', top: newTop+'px'});
+                });
+                console.log('slt c moi');
+                updatePos(0.2);
+                $('.drop-item').droppable('option', 'accept', '.card');
+            };
+            var defausseStart = function(){
+                newDeg = -20;
+                $('.placed').each(function(){
+                    cardId = $('.placed').index(this);
+                    $('.hand-elem').eq(cardId).remove();
+                    newLeft = ($('.actions-item-2 .thumb-item').eq(cardId).offset().left - $('.content-card').offset().left) + ($('.actions-item-2 .thumb-item').eq(cardId).width() / 2);
+                    newTop = ($('.actions-item-2 .thumb-item').eq(cardId).offset().top - $('.content-card').offset().top);
+                    TweenMax.to($(this), 0.5,{ease: Circ.easeInOut, left: newLeft+'px', top: newTop+'px', height: '40px', width: '30px', transform: 'rotateZ('+newDeg+'deg)', xPercent: '-50%', onComplete: defausseComplete});
+                    newDeg = -newDeg;
+                });
+            }
+            var tl = new TimelineLite();
+            tl.to($('.placed').find('.card-anim'), 0.5,{transform: 'scale(1.4)', xPercent: '-50%'});
+            tl.to($('.placed').find('.card-anim'), 0.5,{transform: 'scale(1.4) rotateY(180deg)', xPercent: '-50%'});
+            tl.to($('.placed'), 0.3,{ease: Circ.easeInOut, top: '-=40px', left: '-=70px', onComplete: defausseStart});
+            tl.play();
+        });
+
+
+        $('.actions-item-1').click(function(){
+            if($('.placed').length <= 0){
+                $('.action').remove();
+                $('.content').append('<div class="action action-1"><div class="drop-item"></div><button class="action-validate">OK</button></div>');
+                $('.drop-item').droppable({
+                    out: function(){
+                        $(this).droppable('option', 'accept', '.card');
+                    }
+                });
+            }
+        });
+        $('.actions-item-2').click(function(){
+            if($('.placed').length <= 0){
+                $('.action').remove();
+                $('.content').append('<div class="action action-2"><div class="drop-item"></div><div class="drop-item"></div><button class="action-validate">OK</button></div>');
+                $('.drop-item').droppable({
+                    out: function(){
+                        $(this).droppable('option', 'accept', '.card');
+                    }
+                });
+            }
+        });
+        $('.actions-item-3').click(function(){
+            if($('.placed').length <= 0){
+                $('.action').remove();
+                $('.content').append('<div class="action action-3"><div class="drop-item"></div><div class="drop-item"></div><div class="drop-item"></div><button class="action-validate">OK</button></div>');
+                $('.drop-item').droppable({
+                    out: function(){
+                        $(this).droppable('option', 'accept', '.card');
+                    }
+                });
+            }
+        });
+        $('.actions-item-4').click(function(){
+            if($('.placed').length <= 0){
+                $('.action').remove();
+                $('.content').append('<div class="action action-4"><div class="drop-item"></div><div class="drop-item"></div><div class="drop-item"></div><div class="drop-item"></div><button class="action-validate">OK</button></div>');
+                $('.drop-item').droppable({
+                    out: function(){
+                        $(this).droppable('option', 'accept', '.card');
+                    }
+                });
+            }
+        });
+
+
+
+        $('body').click(function(){
+            console.log();
+        });
+
+    });
+
+</script>
+{% endblock %}

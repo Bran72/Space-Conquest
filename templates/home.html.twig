@@ -1,0 +1,549 @@
+<html>
+<head>
+	<title>Space Conquest</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{{asset('assets/css/game_menu.css')}}">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+	<link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
+
+	<meta property="og:title" content="Space Conquest" />
+	<meta property="og:description" content="Venez affrontez vos amis et des joueurs du monde entier sur le meilleur jeu de carte de conquête spatiale." />
+	<meta property="og:image" content="http://149.91.83.85/jeu/assets/images/og_image.png" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="http://149.91.83.85/jeu/" />
+
+	<meta name="twitter:title" content="Space Conquest">
+	<meta name="twitter:description" content="Venez affrontez vos amis et des joueurs du monde entier sur le meilleur jeu de carte de conquête spatiale.">
+	<meta name="twitter:image" content="http://149.91.83.85/jeu/assets/images/og_image.png">
+	<meta name="twitter:card" content="summary_large_image">
+
+</head>
+<body onload="recevoir()">
+	<div class="content no-scroll">
+		<img class="logo" src="{{asset('assets/images/logo.svg')}}">
+		<div class="left">
+			<div class="profil">
+				<div class="part-1">
+					<div class="icone">
+						<a class="user-image"><i class="fas fa-edit"></i></a>
+						{% if connect.image != null %}
+							<img src="{{ asset('assets/images/user_images/' ~ connect.image) }}">
+						{% else %}
+							<img src="{{ asset('assets/images/user_images/user.svg') }}">
+						{% endif %}
+						<p>{{connect}}</p>
+					</div>
+					<a class="menu-button"><i class="fas fa-cogs fa-lg"></i></a>
+                    {% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('admin_home') }}" style="color: inherit; margin-top: 15px;"><i class="fas fa-shield-alt"></i> Backoffice <i class="fas fa-shield-alt"></i></a>
+                    {% endif %}
+				</div>
+				<div class="part-1">
+					<div class="part-2">
+						<p>Score : {{ score }}</p>
+						<!--<a class="button" href="classement.html">
+							<p>CLASSEMENT</p>
+							<img src="{# {{asset('assets/images/yellow_button.svg')}} #}">
+							</a>-->
+						</a>
+					</div>
+					<div class="part-2">
+						<p>Parties en cours :</p>
+						<form method="post" action="{{ path('rejoindre') }}">
+							<div class="choose">
+								<div class="drop-button">
+									<i class="fas fa-angle-down fa-lg"></i>
+								</div>
+								<select name="partie" required>
+                                    {% for partie in parties %}
+                                        {% if connect.id == partie.partieTour or connect.id == partie.joueur1.id or connect.id == partie.joueur2.id %}
+                                            {% if partie.partieGagne != 1 %}
+												<option value="{{ partie.id }}">{{ partie.joueur1 }} VS {{ partie.joueur2 }} - Tour {{ partie.partieFinie }} - Manche {{ partie.partieManche }} - Partie n°{{ partie.id }}</option>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+								</select>
+							</div>
+							<div class="button submit">
+								<input type="submit" value="REJOINDRE">
+								<img src="{{asset('assets/images/red_button.svg')}}">
+							</div>
+						</form>
+					</div>
+				</div>
+				
+			</div>
+			<div class="chat">
+				<div class="chat-view"><div id="messages"></div></div>
+				<div class="chat-form">
+					<input rows="1" type="text" id="monMessage" name="chat" placeholder="Ecrivez quelque chose" autocomplete="off">
+						<div class="submit">
+							<button onclick="envoyer()">Chat</button>
+							<img src="{{asset('assets/images/yellow_button_short.svg')}}">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="right">
+			<h2>Choisissez un adversaire :</h2>
+			<form class="part-1" method="post" action="{{ path('creer_partie') }}">
+				<div class="choose">
+					<div class="drop-button">
+						<i class="fas fa-angle-down fa-lg"></i>
+					</div>
+					<select name="adversaire" required>
+						{% for user in users %}
+						{% if user.id != connect.id%}
+						{% if user.userEtat == 1 %}
+						<option class="option" value="{{ user.id }}">{{ user.username }}</option>
+						{% endif %}
+						{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+				<div class="play button">
+					<input type="submit" value="JOUER">
+					<img src="{{asset('assets/images/play_button.svg')}}">
+				</div>
+			</form>
+			<div class="howtoplay">
+				<p>COMMENT JOUER ?</p>
+				<div class="part-2">
+					<a class="button tuto-button">
+						<p>TUTORIEL</p>
+						<img src="{{asset('assets/images/yellow_button.svg')}}">
+					</a>
+					<a class="button rules-button">
+						<p>RÈGLES</p>
+						<img src="{{asset('assets/images/red_button.svg')}}">
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="share">
+			<a class="fb-share">
+				<img src="{{asset('assets/images/facebook-logo-button.svg')}}">
+			</a>
+			<a class="tw-share">
+				<img src="{{asset('assets/images/twitter-logo-button.svg')}}">
+			</a>
+		</div>
+	</div>
+
+	<div class="tuto">
+		<iframe src="https://www.youtube.com/embed/FxDA7XvZI9U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	</div>
+	<div class="disclaimer">
+		<img class="logo" src="{{asset('assets/images/logo.svg')}}">
+		<p>Désolé, Space Conquest n'est pas disponible sur votre plateforme.</p>
+		<p>Rejoignez nous sur PC et Mac.</p>
+		<div class="share">
+			<a class="fb-share">
+				<img src="{{asset('assets/images/facebook-logo-button.svg')}}">
+			</a>
+			<a class="tw-share">
+				<img src="{{asset('assets/images/twitter-logo-button.svg')}}">
+			</a>
+		</div>
+	</div>
+
+	<div class="menu">
+		<div class="menu-content">
+			<a class="close"><i class="fas fa-times fa-2x"></i></a>
+			<hr/>
+			<div class="part-1">
+				<a class="button" href="{{ path('logout_etat')  }}">
+					<p>DÉCONNEXION</p>
+					<img src="{{asset('assets/images/play_button.svg')}}">
+				</a>
+			</div>
+			<hr/>
+			<hr/>
+			<div class="part-1">
+				<p>Modifer votre mot de passe</p>
+				<form method="post" action="{{ path('changePassword') }}">
+					<input type="password" name="new_password" required>
+					<div class="button submit">
+						<input type="submit" value="CHANGER">
+						<img src="{{asset('assets/images/validate_button.svg')}}">
+					</div>
+				</form>
+			</div>
+			<hr/>
+		</div>
+	</div>
+
+	<div class="menu-image">
+		<div class="menu-img-content">
+			<a class="close"><i class="fas fa-times fa-2x"></i></a>
+			<div class="part-1">
+					<p id="modify-img">Modifier votre photo de profil</p>
+			</div>
+			<hr/>
+			<hr/>
+			<div class="part-1">
+				<p>Choisir votre photo (png, jpg, gif)</p>
+                {{ form_start(form) }}
+                {{ form_row(form.image) }}
+					<div class="button submit">
+						<input type="submit" value="CHANGER">
+						<img src="{{asset('assets/images/validate_button.svg')}}">
+					</div>
+                {{ form_end(form) }}
+			</div>
+			<hr/>
+		</div>
+	</div>
+
+
+
+	<div class="rules">
+
+		<div class="rules-content">
+
+			<div class="rules-item">
+			
+
+				<div class="accordion js-accordion">
+					<div class="accordion__item js-accordion-item">
+						<div class="accordion-header js-accordion-header">Contenu</div> 
+						<div class="accordion-body js-accordion-body">
+							<div class="accordion-body__contents">
+								<p>- 7 Cartes Biome</p></br>
+								<p>- 8 Jetons d’action(4 chacun)</p></br>
+								<p>- 21 Cartes Planètes</p></br>
+								<p>- 7 Jetons de victoire</p>
+							</div>
+						</div><!-- end of accordion body -->
+					</div><!-- end of accordion item -->
+					<div class="accordion__item js-accordion-item">
+						<div class="accordion-header js-accordion-header">But du jeu</div> 
+						<div class="accordion-body js-accordion-body">
+							<div class="accordion-body__contents">
+								<p>- Dans Space Conquest, le but du jeu est d’acquérir 4 planètes ou de cumuler au moins 11 points de conquête.</p></br>
+								<p>- Votre adversaire et vous allez jouer chacun votre tour, et vous allez réaliser des actions pour obtenir différents types de cartes planète. Pour chacune, Si vous avez plus de cartes planète que votre adversaire, vous vous verrez attribuer sa découverte.</p></br>
+								<p>- La partie se poursuit jusqu'à ce qu'un des joueurs ait atteint l'objectif pour remporter la partie lors du décompte des points.</p>
+							</div>
+
+						</div><!-- end of accordion body -->
+					</div><!-- end of accordion item -->
+					<div class="accordion__item js-accordion-item">
+						<div class="accordion-header js-accordion-header">Détails des cartes</div> 
+						<div class="accordion-body js-accordion-body">
+							<div class="accordion-body__contents">
+								<p>- Cartes Biome : Points de conquête : Chaque planètes se voient attribuer un certain nombre de points de conquêtes. Plus cette planète est propice à accueillir la vie, plus son nombre de points sera élevé.</p></br>
+
+								<p>- Cartes Planètes Chaque carte biome se voit attribuer un certains nombre de cartes planète selon son nombres de points de conquête. Plus un biome est habitable, plus il se vera attribuer de cartes planète et par conséquent, il sera plus difficile de de se l’approprier.</p>
+							</div>
+						</div><!-- end of accordion body -->
+					</div><!-- end of accordion item -->
+					<div class="accordion__item js-accordion-item">
+						<div class="accordion-header js-accordion-header">Mise en place du jeu</div> 
+						<div class="accordion-body js-accordion-body">
+							<div class="accordion-body__contents">
+								<p>1. Alignez les 7 cartes de Biome, dans l'ordre croissant de points de conquête de gauche à droite, entre les deux joueurs.</p></br>
+								<p>2. Placez 1 jeton de victoire au centre de chaque carte Biome.</p></br>
+								<p>3. Formez une pile avec toutes les cartes planète, face cachée, que vous placez à côté de la rangée des biomes.</p></br>
+								<p>4. Chaque joueur prend 4 jetons d'action de la même couleur, face colorée visible, et il les place devant lui.</p></br>
+								<p>5. Le plus jeune joueur est désigné comme premier joueur.</p>
+							</div>
+						</div><!-- end of accordion body -->
+					</div><!-- end of accordion item -->
+					<div class="accordion__item js-accordion-item">
+						<div class="accordion-header js-accordion-header">Séquence de jeu</div> 
+						<div class="accordion-body js-accordion-body">
+							<div class="accordion-body__contents">
+								<p>Le jeu se joue en une ou plusieurs manches. Chaque manche est constituée de trois phases jouées dans l'ordre suivant :</p></br>
+								<p>- Phase 1 : Distribuez</p>
+								<p>- Phase 2 : Action</p>
+								<p>- Phase 3 : Décompte des points et mise à jour</p></br>
+								<p>Si un joueur atteint l'objectif de victoire lors de la phase de décompte des points, la partie se termine immédiatement. Si aucun des joueurs n'a atteint l'objectif, une nouvelle manche est jouée. La partie se poursuit jusqu'à ce qu'un des joueurs l'emporte.</p>
+							</div>
+							<div class="accordion js-accordion">
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header">Phase 1 : Distribuer</div> 
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<p>- Le premier joueur mélange les 21 cartes planète pour former une pile, face cachée, et il retire au hasard une carte qu'il remet dans la boîte sans la regarder. Cette carte ne sera pas utilisée pendant cette manche. Aucun des joueurs ne peut la regarder.</p></br>
+											<p>- Distribuez à chaque joueur 6 cartes planète comme main de départ. Les cartes ne doivent pas être montrées à l'adversaire.</p></br>
+											<p>- Formez une pile avec les cartes planète restantes (« la pioche des planètes»), et placez-la à côté de la rangée des biomes.</p></br>
+										</div><!-- end of sub accordion item body contents -->
+									</div><!-- end of sub accordion item body -->
+								</div><!-- end of sub accordion item -->
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header">Phase 3 : Décompte des points</div> 
+								</div><!-- end of sub accordion item -->
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header">Phase 2 : Action</div> 
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<p>- En commençant par le premier joueur, les joueurs vont jouer chacun leur tour jusqu’à ce que les deux joueurs aient joué leurs 4 actions.</p></br>
+											<p>- Lors de votre tour, vous devez piocher une carte de la pioche des planètes, et ensuite vous réalisez une action. Il n'y a pas d'ordre imposé pour les actions.</p></br>
+											<p>- Lorsque vous réalisez une action, vous choisissez 1 de vos jetons d'action face colorée visible et vous réalisez l'action correspondante. Après avoir résolu l'action, retournez le jeton face cachée. Vous ne pouvez pas choisir de jetons face cachée (chacun des jetons d'action des joueurs ne sera utilisé qu'un seule fois pendant la manche).</p></br>
+											<p>- Les 4 actions dans Space Conquest sont :</p>
+											<p>1. Pacte :</p>
+											<p>- Choisissez 1 carte de votre main, et placez-la face cachée sous le jeton Pacte. Cette carte sera révélée lors de la phase de décompte des points et elle rapportera des points.</p>
+											<p>- Vous pouvez regarder cette carte à tout moment dans la partie.</p></br>
+											<p>2. Abandon :</p>
+											<p>- Choisissez 2 cartes de votre main, et placez-les face cachée sous le jeton d’abandon. Ces cartes ne rapporteront pas de points lors de cette manche.</p>
+											<p>- Vous pouvez regarder ces cartes à tout moment pendant la partie.</p></br>
+											<p>3. Monopole :</p>
+											<p>- Choisissez 3 cartes de votre main, et placez-les face visible devant vous.</p>
+											<p>- Votre adversaire choisi 1 carte parmi celles-ci et il la place sur son côté de la ligne des biomes, à côté du biome correspondant. Placez ensuite les 2 cartes de votre côté, à côté des biomes correspondants. Ces cartes rapporteront des points.</p></br>
+											<p>4. Négociation :</p>
+											<p>- Choisissez 4 cartes de votre main et placez-les face visible devant vous. Vous divisez ces cartes en deux séries comprenant chacune 2 carte.</p>
+											<p>- Votre adversaire choisit 1 série et place ces 2 cartes de son côté de la ligne des biomes à côté des biomes correspondants. Placez ensuite les 2 cartes restantes de votre côté, à côté des biomes correspondants. Ces cartes rapporteront des points.</p>
+										</div><!-- end of sub accordion item body contents -->
+									</div><!-- end of sub accordion item body -->
+								</div><!-- end of sub accordion item -->
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header">Re-Phase 3 : Décompte des points</div> 
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<p>- Après que les joueurs ont réalisé leurs 4 actions, le jeu passe à la phase 3.</p></br>
+											<p>- Les deux joueurs révèlent la carte qu'ils ont placée sous le jeton secret, et ils placent cette carte de leur côté de la ligne des biomes, à côté du biome correspondant. Ensuite, comparez le nombre de cartes planète de chaque côté de chaque biome :<p>
+											<p>-Il y en a plus d'un côté que de l'autre : le côté qui a le plus de cartes planète remporte cette planète. Déplacez le jeton de victoire correspondant sur le côté vainqueur.<p>
+											<p>- Égalité des deux côtés ou pas de carte : ne déplacez pas le jeton de victoire.<p></br>
+											<p>- Après le décompte des points, les joueurs calculent le nombre de biomes qu'ils ont découverts et ils calculent la somme des points de conquête. Si un des joueurs a atteint l'objectif de victoire, la partie se termine immédiatement. (Voir la partie : Fin de la partie).</p></br>
+											<p>- Si aucun des joueurs n'a atteint l'objectif de victoire, passez à la mise à jour :</p>
+											<p>- Reprenez TOUTES les cartes planètes sur la table et dans la boîte, formez une pile face cachée et mettez-la de côté.</p>
+											<p>- Les jetons de victoire restent à leur place. Remarque : ne les remettez pas au centre de la carte Biome.</p>
+											<p>- Les deux joueurs retournent leurs jetons d'action face visible. - Le deuxième joueur devient le nouveau premier joueur.<p>
+											<p>- Vous êtes prêt pour démarrer la nouvelle manche.</p>
+										</div><!-- end of sub accordion item body contents -->
+									</div><!-- end of sub accordion item body -->
+								</div><!-- end of sub accordion item -->
+								<div class="accordion__item js-accordion-item">
+									<div class="accordion-header js-accordion-header">Phase final : Fin de la partie</div> 
+									<div class="accordion-body js-accordion-body">
+										<div class="accordion-body__contents">
+											<p>- Si un joueur a remporté 4 planètes ou 11 (ou plus) de points de conquête, la partie se termine immédiatement.</p></br>
+											<p>- Si un seul joueur atteint l'objectif de victoire, il est le vainqueur.</p></br>
+											<p>- Si un joueur a remporté 4 planètes et que l'autre a remporté 11 (ou plus) points de conquête, ce dernier est le vainqueur.</p>
+										</div><!-- end of sub accordion item body contents -->
+									</div><!-- end of sub accordion item body -->
+								</div><!-- end of sub accordion item -->
+							</div><!-- end of sub accordion -->
+						</div><!-- end of accordion body -->
+					</div><!-- end of accordion item -->   
+				</div><!-- end of accordion -->
+
+
+
+			</div>	
+
+		</div>
+
+	</div>
+
+	<div id="particles-js"></div>
+	<script src="{{asset('assets/js/jquery-3.1.1.min.js')}}"></script>
+	<script src="{{asset('assets/js/jquery-ui.min.js')}}"></script>
+	<script src="{{asset('assets/js/particles.js')}}"></script>
+	<script src="{{asset('assets/js/particles.json')}}"></script>
+	<script src="{{asset('assets/js/accordion.js')}}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSPlugin.min.js"></script>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+	<script type="text/javascript">
+
+
+		$(document).ready(function(){
+
+			var min = 0;
+			var sec = 0;
+			var timer;
+
+
+			$('.search p:first-child').width($('.search p:first-child').width());
+			setInterval(function(){
+				if($('.search p:first-child').text() == 'Recherche d\'adversaire...'){
+					$('.search p:first-child').text('Recherche d\'adversaire');
+				}
+				else{
+					$('.search p:first-child').text($('.search p:first-child').text() + '.');
+				}
+			}, 500);
+
+
+
+			$('.play').click(function(){
+
+				if($(this).hasClass('cancel')){
+
+					$(this).removeClass('active-button').removeClass('cancel').css({transform: 'scale(0.98)'}).on('transitionend', function(){
+						$(this).css({transform: 'scale(1)'});
+					});
+					$('.play p').text('JOUER');
+					$('.search').css({opacity: '0'});
+					clearInterval(timer);
+					min = 0;
+					sec = 0;
+					$('.search-timer').text('0:00');
+				}
+				else{
+
+					$(this).addClass('active-button').addClass('cancel').css({transform: 'scale(0.98)'}).on('transitionend', function(){
+						$(this).css({transform: 'scale(1)'});
+					});
+					$('.play p').text('ANNULER');
+					$('.search').css({opacity: '1'});
+
+					timer = setInterval(function(){
+						sec++;
+						if(sec == 60){
+							sec = 0;
+							min = 1;
+						}
+						if(sec < 10){
+							sec = '0'+sec;
+						}
+						$('.search-timer').text(min+':'+sec);
+					}, 1000);
+
+				}
+
+			});
+
+
+			$('.fb-share').click(function(){
+				window.open('https://www.facebook.com/sharer/sharer.php?u=http://149.91.83.85/jeu/', 'newwindow', 'width=600,height=750'); 
+				return false;
+			});
+			$('.tw-share').click(function(){
+				window.open('http://www.twitter.com/intent/tweet?url=http://149.91.83.85/jeu/', 'newwindow', 'width=600,height=350'); 
+				return false;
+			});
+
+
+			$('.rules-button').click(function(){
+				$('.rules').fadeIn(200, function(){
+					$('.rules-item').css({opacity: '1', transform: 'translateY(0)'});
+				});
+				
+			});
+
+			$('.rules').click(function(e){
+				if(!$(e.target).closest('.accordion').length){
+					$('.rules').fadeOut(200);
+					$('.rules-item').css({opacity: '0', transform: 'translateY(-200px)'});
+				}
+			});
+
+			$('.tuto-button').click(function(){
+				$('.tuto').fadeIn(200, function(){
+					$(this).css({display: 'flex'});
+					$('iframe').css({opacity: '1', transform: 'translateY(0)'});
+				});
+				
+			});
+
+			$('.tuto').click(function(e){
+				if(!$(e.target).closest('.accordion').length){
+					$('.tuto').fadeOut(200);
+					$('iframe').css({opacity: '0', transform: 'translateY(-200px)'});
+				}
+			});
+
+			$('.menu-button').click(function(){
+				$('.menu').fadeIn(200, function(){
+					$(this).css({display: 'flex'});
+					$('.menu-content').css({opacity: '1', transform: 'translateY(0)'});
+				});
+			});
+
+			$('.menu .close').click(function(){
+				$('.menu').fadeOut(200);
+				$('.menu-content').css({opacity: '0', transform: 'translateY(-200px)'});
+			});
+
+			$('.menu').click(function(e){
+				if(!$(e.target).closest('.menu-content').length){
+					$('.menu').fadeOut(200);
+					$('.menu-content').css({opacity: '0', transform: 'translateY(-200px)'});
+				}
+			});
+
+
+
+
+            $('.user-image').click(function(){
+                $('.menu-image').fadeIn(200, function(){
+                    $(this).css({display: 'flex'});
+                    $('.menu-img-content').css({opacity: '1', transform: 'translateY(0)'});
+                });
+            });
+
+            $('.menu-image .close').click(function(){
+                $('.menu-image').fadeOut(200);
+                $('.menu-img-content').css({opacity: '0', transform: 'translateY(-200px)'});
+            });
+
+            $('.menu-image').click(function(e){
+                if(!$(e.target).closest('.menu-img-content').length){
+                    $('.menu-image').fadeOut(200);
+                    $('.menu-img-content').css({opacity: '0', transform: 'translateY(-200px)'});
+                }
+            });
+
+
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				$('.disclaimer').show().css({display: 'flex'});
+				$('.content').hide();
+			}
+
+		});
+
+	</script>
+	<script src="{{ asset('assets/js/socket.io.js') }}"></script>
+	<script>
+	    var socket = io.connect('http://149.91.83.85:8080');
+        socket.on('serveurversclient', function(texte){
+            document.getElementById("messages").innerHTML=texte;
+            $('.chat-view').scrollTop($('#messages').height());
+        });
+	    function envoyer(){
+	        var pseudo = '{{ connect }}';
+			{% if connect.image != null %}
+	        var image = '{{ asset('assets/images/user_images/' ~ connect.image) }}';
+			{% else %}
+			var image = '{{ asset('assets/images/user_images/user.svg') }}';
+			{% endif %}
+
+	        socket.on('serveurversclient', function(texte){
+	            document.getElementById("messages").innerHTML=texte;
+	            $('.chat-view').scrollTop($('#messages').height());
+	        });
+
+	        var regex = /.*[^ ].*/;
+			var noSpace = regex.test($('#monMessage').val());
+	        if ($('#monMessage').val().length == 0){
+
+	        }
+	        else{
+	        	if(noSpace == true){
+	        		var leMessage = '<p><img src="'+image+'" style="width: 20px;">&nbsp<strong>'+pseudo+':</strong>&nbsp'+ document.getElementById("monMessage").value+'</p>';
+					socket.emit('clientversserveur', leMessage);
+					document.getElementById("monMessage").value="";
+	        	}
+	        } 
+	    }
+	    $('#monMessage').keypress(function(e){
+	    	if(e.which == 13){
+	    		envoyer();
+	    	}
+		});
+
+        function recevoir() {
+            socket.on('serveurversclient', function(texte){
+                document.getElementById("messages").innerHTML=texte;
+                $('.chat-view').scrollTop($('#messages').height());
+            });
+        };
+	</script>
+
+</body>
+</html>

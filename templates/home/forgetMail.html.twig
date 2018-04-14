@@ -1,0 +1,16 @@
+{# templates/home/regMail.html.twig #}
+<h3>Récupération de mot de passe - Space Conquest</h3>
+
+Bonjour {{ username }} ! Vous recevez ce mail suite à une demande de récupération de mot de passe. <br>
+Votre mot de passe provisoire est écrit ci-dessous, n'oubliez pas de le changer une fois re-connecté ! <br>
+<br>
+Mot de passe: {{ clear }}
+<br>
+{# example, assuming you have a route named "login" #}
+Pour vous connecter, rendez-vous sur: <a href="{{ url('security_login') }}">Space Conquest - Connexion</a>.
+<br>
+Merci et bon jeu !<br>
+L'équipe de Space Conquest.
+
+{# Makes an absolute URL to the /images/logo.png file #}
+{# <img src="{{ absolute_url(asset('images/logo.png')) }}"> #}

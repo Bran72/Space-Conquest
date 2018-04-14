@@ -1,0 +1,49 @@
+{% extends 'admin.html.twig' %}
+
+{% block style %}
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h3 style="text-align: center">Gérer les utilisateurs</h3>
+
+
+    <table style="text-align: center">
+        <thead>
+        <tr>
+            <th>Pseudo</th>
+            <th>Mail</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for users in allUsers %}
+        <tr>
+            <td>{{ users.username }}</td>
+            <td>{{ users.userMail }}</td>
+            <form action="{{ path('delete_user') }}" method="post">
+                <td><button type="submit" class="btn btn-primary" name="idUser" value="{{ users.id }}">Supprimer</button></td>
+            </form>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

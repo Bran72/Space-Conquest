@@ -1,0 +1,46 @@
+{% extends 'home.html.twig' %}
+
+{% block body %}
+    <h1>Bienvenue {{ connect.username }} !</h1>
+    <p>Votre score: {{ score }}</p>
+    <p>Votre nombre de parties: {{ nbPartie }}</p>
+
+
+    <p>Adresse mail: {{ connect.usermail }}</p><br>
+    <p>Score total: <span style="color: red">Récupérer le score total du joueur (additionner les scores propres à l'id du joueur connecté pour chaque partie créée)</span></p>
+
+    <!--Ajouter le changement de mot de passe-->
+
+    <form method="post" action="{{ path('creer_partie') }}">
+        <div>
+            Choisissez votre adversaire:
+            <select name="adversaire" require>
+                {% for user in users %}
+                    {% if user.id != connect.id%}
+                    {% if user.userEtat != 0 %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </select><span style="color: red"><i>  Si vide, aucun utilisateur n'est connecté</i></span>
+        </div>
+        <div>
+            <br><br><p style="color: red">Mettre une condition qui bloque la création de la partie si aucun utilisateur n'est sélectionné (car erreur à la clef)</p>
+            <input type="submit" value="Créer la partie">
+        </div>
+    </form>
+
+        <br><br><br>
+
+        <div>
+            <p>Modifer votre mot de passe</p>
+            <form method="post" action="{{ path('changePassword') }}">
+                <div>
+                    <input type="password" name="new_password" required>
+                </div>
+                <div>
+                    <input type="submit" value="Changer">
+                </div>
+            </form>
+        </div>
+{% endblock %}

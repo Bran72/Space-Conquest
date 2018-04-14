@@ -1,0 +1,9 @@
+body{
+    background-color: #c4c4c4;
+}
+
+nav > ul > li{
+    display:  inline-block;
+    padding: 15px;
+    text-decoration:  none;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block meta %}{% endblock %}
+
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/plateau.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+
+    {% block stylesheets %}{% endblock %}
+
+    {% block js_bug_refresh %}{% endblock %}
+</head>
+
+<body>
+<div class="content">
+
+    {% block body %}{% endblock %}
+</div>
+<div class="disclaimer">
+    <img class="logo" src="{{asset('assets/images/logo.svg')}}">
+    <p>Désolé, Space Conquest n'est pas disponible sur votre plateforme.</p>
+    <p>Rejoignez nous sur PC et Mac.</p>
+    <div class="share">
+        <a class="fb-share">
+            <img src="{{asset('assets/images/facebook-logo-button.svg')}}">
+        </a>
+        <a class="tw-share">
+            <img src="{{asset('assets/images/twitter-logo-button.svg')}}">
+        </a>
+    </div>
+</div>
+<div id="particles-js"></div>
+{% block javascripts %}{% endblock %}
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+</body>
+</html>

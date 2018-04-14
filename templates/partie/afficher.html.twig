@@ -1,0 +1,1280 @@
+{% extends 'game.html.twig' %}
+
+{% block meta %}
+    {% if(user.id != idUserTour) %}
+        <meta http-equiv="refresh" content="5">
+    {% endif %}
+
+    {% if(partieGagne == 1) %}
+        <meta http-equiv="refresh" content="10">
+    {% endif %}
+{% endblock %}
+
+{% block js_bug_refresh %}
+    <script type="text/javascript">
+      function refresh(){
+        window.location.reload()
+      }
+    </script>
+{% endblock %}
+
+{% block body %}
+	{% if partieGagne != 1 %}
+		<div class=manche>
+			<h2>Manche</h2>
+			<h1>{{ partie.partieManche }}</h1>
+			<h3>Tour de <strong>{{ tourJoueur }}</strong></h3>
+			<img class="loader" src="{{ asset('assets/images/load.svg') }}">
+		</div>
+	{% endif %}
+	<a class="leave" href="{{ path('nouvelle_partie')}}">
+		<i class="fas fa-sign-out-alt fa-2x"></i>
+	</a>
+    <br><br>
+    <div class="objectifs">
+	    {% for objectif in partie.Objectifs %}
+	    		<div class="objectifs-{{ objectif }}">
+	    			<div class="scores adv-scores"></div>
+	    			<img src="{{ asset('assets/images/carte_objectif/') }}{{ objectifs[objectif].image }}" style="width: 100px">
+	    			<div class="scores own-scores"></div>
+	    		</div>
+	    {% endfor %}
+    </div>
+    <br>
+
+	{% if user.id == joueur1.id %}
+        {% if jetonJ1.monopoleRecu != 0 %}
+            {% if jetonJ1.monopoleRecu == 1 or  jetonJ1.monopoleRecu == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 3 or  jetonJ1.monopoleRecu == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 5 or  jetonJ1.monopoleRecu == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 7 or  jetonJ1.monopoleRecu == 8 or  jetonJ1.monopoleRecu == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 10 or  jetonJ1.monopoleRecu == 11 or  jetonJ1.monopoleRecu == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 13 or  jetonJ1.monopoleRecu == 14 or  jetonJ1.monopoleRecu == 15 or jetonJ1.monopoleRecu == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 17 or  jetonJ1.monopoleRecu == 18 or  jetonJ1.monopoleRecu == 19 or jetonJ1.monopoleRecu == 20 or jetonJ1.monopoleRecu == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.monopoleGarde1 != 0 %}
+            {% if jetonJ1.monopoleGarde1 == 1 or  jetonJ1.monopoleGarde1 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 3 or  jetonJ1.monopoleGarde1 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 5 or  jetonJ1.monopoleGarde1 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 7 or  jetonJ1.monopoleGarde1 == 8 or  jetonJ1.monopoleGarde1 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 10 or  jetonJ1.monopoleGarde1 == 11 or  jetonJ1.monopoleGarde1 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 13 or  jetonJ1.monopoleGarde1 == 14 or  jetonJ1.monopoleGarde1 == 15 or jetonJ1.monopoleGarde1 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 17 or  jetonJ1.monopoleGarde1 == 18 or  jetonJ1.monopoleGarde1 == 19 or jetonJ1.monopoleGarde1 == 20 or jetonJ1.monopoleGarde1 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.monopoleGarde2 != 0 %}
+            {% if jetonJ1.monopoleGarde2 == 1 or  jetonJ1.monopoleGarde2 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 3 or  jetonJ1.monopoleGarde2 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 5 or  jetonJ1.monopoleGarde2 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 7 or  jetonJ1.monopoleGarde2 == 8 or  jetonJ1.monopoleGarde2 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 10 or  jetonJ1.monopoleGarde2 == 11 or  jetonJ1.monopoleGarde2 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 13 or  jetonJ1.monopoleGarde2 == 14 or  jetonJ1.monopoleGarde2 == 15 or jetonJ1.monopoleGarde2 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 17 or  jetonJ1.monopoleGarde2 == 18 or  jetonJ1.monopoleGarde2 == 19 or jetonJ1.monopoleGarde2 == 20 or jetonJ1.monopoleGarde2 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationRecu1 != 0 %}
+            {% if jetonJ1.negociationRecu1 == 1 or  jetonJ1.negociationRecu1 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 3 or  jetonJ1.negociationRecu1 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 5 or  jetonJ1.negociationRecu1 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 7 or  jetonJ1.negociationRecu1 == 8 or  jetonJ1.negociationRecu1 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 10 or  jetonJ1.negociationRecu1 == 11 or  jetonJ1.negociationRecu1 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 13 or  jetonJ1.negociationRecu1 == 14 or  jetonJ1.negociationRecu1 == 15 or jetonJ1.negociationRecu1 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 17 or  jetonJ1.negociationRecu1 == 18 or  jetonJ1.negociationRecu1 == 19 or jetonJ1.negociationRecu1 == 20 or jetonJ1.negociationRecu1 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationRecu2 != 0 %}
+            {% if jetonJ1.negociationRecu2 == 1 or  jetonJ1.negociationRecu2 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 3 or  jetonJ1.negociationRecu2 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 5 or  jetonJ1.negociationRecu2 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 7 or  jetonJ1.negociationRecu2 == 8 or  jetonJ1.negociationRecu2 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 10 or  jetonJ1.negociationRecu2 == 11 or  jetonJ1.negociationRecu2 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 13 or  jetonJ1.negociationRecu2 == 14 or  jetonJ1.negociationRecu2 == 15 or jetonJ1.negociationRecu2 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 17 or  jetonJ1.negociationRecu2 == 18 or  jetonJ1.negociationRecu2 == 19 or jetonJ1.negociationRecu2 == 20 or jetonJ1.negociationRecu2 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationGarde1 != 0 %}
+            {% if jetonJ1.negociationGarde1 == 1 or  jetonJ1.negociationGarde1 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 3 or  jetonJ1.negociationGarde1 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 5 or  jetonJ1.negociationGarde1 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 7 or  jetonJ1.negociationGarde1 == 8 or  jetonJ1.negociationGarde1 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 10 or  jetonJ1.negociationGarde1 == 11 or  jetonJ1.negociationGarde1 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 13 or  jetonJ1.negociationGarde1 == 14 or  jetonJ1.negociationGarde1 == 15 or jetonJ1.negociationGarde1 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 17 or  jetonJ1.negociationGarde1 == 18 or  jetonJ1.negociationGarde1 == 19 or jetonJ1.negociationGarde1 == 20 or jetonJ1.negociationGarde1 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationGarde2 != 0 %}
+            {% if jetonJ1.negociationGarde2 == 1 or  jetonJ1.negociationGarde2 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 3 or  jetonJ1.negociationGarde2 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 5 or  jetonJ1.negociationGarde2 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 7 or  jetonJ1.negociationGarde2 == 8 or  jetonJ1.negociationGarde2 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 10 or  jetonJ1.negociationGarde2 == 11 or  jetonJ1.negociationGarde2 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 13 or  jetonJ1.negociationGarde2 == 14 or  jetonJ1.negociationGarde2 == 15 or jetonJ1.negociationGarde2 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 17 or  jetonJ1.negociationGarde2 == 18 or  jetonJ1.negociationGarde2 == 19 or jetonJ1.negociationGarde2 == 20 or jetonJ1.negociationGarde2 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+
+        {% if jetonJ2.monopoleRecu != 0 %}
+            {% if jetonJ2.monopoleRecu == 1 or  jetonJ2.monopoleRecu == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 3 or  jetonJ2.monopoleRecu == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 5 or  jetonJ2.monopoleRecu == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 7 or  jetonJ2.monopoleRecu == 8 or  jetonJ2.monopoleRecu == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 10 or  jetonJ2.monopoleRecu == 11 or  jetonJ2.monopoleRecu == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 13 or  jetonJ2.monopoleRecu == 14 or  jetonJ2.monopoleRecu == 15 or jetonJ2.monopoleRecu == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 17 or  jetonJ2.monopoleRecu == 18 or  jetonJ2.monopoleRecu == 19 or jetonJ2.monopoleRecu == 20 or jetonJ2.monopoleRecu == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.monopoleGarde1 != 0 %}
+            {% if jetonJ2.monopoleGarde1 == 1 or  jetonJ2.monopoleGarde1 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 3 or  jetonJ2.monopoleGarde1 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 5 or  jetonJ2.monopoleGarde1 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 7 or  jetonJ2.monopoleGarde1 == 8 or  jetonJ2.monopoleGarde1 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 10 or  jetonJ2.monopoleGarde1 == 11 or  jetonJ2.monopoleGarde1 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 13 or  jetonJ2.monopoleGarde1 == 14 or  jetonJ2.monopoleGarde1 == 15 or jetonJ2.monopoleGarde1 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 17 or  jetonJ2.monopoleGarde1 == 18 or  jetonJ2.monopoleGarde1 == 19 or jetonJ2.monopoleGarde1 == 20 or jetonJ2.monopoleGarde1 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.monopoleGarde2 != 0 %}
+            {% if jetonJ2.monopoleGarde2 == 1 or  jetonJ2.monopoleGarde2 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 3 or  jetonJ2.monopoleGarde2 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 5 or  jetonJ2.monopoleGarde2 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 7 or  jetonJ2.monopoleGarde2 == 8 or  jetonJ2.monopoleGarde2 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 10 or  jetonJ2.monopoleGarde2 == 11 or  jetonJ2.monopoleGarde2 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 13 or  jetonJ2.monopoleGarde2 == 14 or  jetonJ2.monopoleGarde2 == 15 or jetonJ2.monopoleGarde2 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 17 or  jetonJ2.monopoleGarde2 == 18 or  jetonJ2.monopoleGarde2 == 19 or jetonJ2.monopoleGarde2 == 20 or jetonJ2.monopoleGarde2 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationRecu1 != 0 %}
+            {% if jetonJ2.negociationRecu1 == 1 or  jetonJ2.negociationRecu1 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 3 or  jetonJ2.negociationRecu1 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 5 or  jetonJ2.negociationRecu1 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 7 or  jetonJ2.negociationRecu1 == 8 or  jetonJ2.negociationRecu1 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 10 or  jetonJ2.negociationRecu1 == 11 or  jetonJ2.negociationRecu1 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 13 or  jetonJ2.negociationRecu1 == 14 or  jetonJ2.negociationRecu1 == 15 or jetonJ2.negociationRecu1 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 17 or  jetonJ2.negociationRecu1 == 18 or  jetonJ2.negociationRecu1 == 19 or jetonJ2.negociationRecu1 == 20 or jetonJ2.negociationRecu1 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationRecu2 != 0 %}
+            {% if jetonJ2.negociationRecu2 == 1 or  jetonJ2.negociationRecu2 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 3 or  jetonJ2.negociationRecu2 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 5 or  jetonJ2.negociationRecu2 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 7 or  jetonJ2.negociationRecu2 == 8 or  jetonJ2.negociationRecu2 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 10 or  jetonJ2.negociationRecu2 == 11 or  jetonJ2.negociationRecu2 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 13 or  jetonJ2.negociationRecu2 == 14 or  jetonJ2.negociationRecu2 == 15 or jetonJ2.negociationRecu2 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 17 or  jetonJ2.negociationRecu2 == 18 or  jetonJ2.negociationRecu2 == 19 or jetonJ2.negociationRecu2 == 20 or jetonJ2.negociationRecu2 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationGarde1 != 0 %}
+            {% if jetonJ2.negociationGarde1 == 1 or  jetonJ2.negociationGarde1 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 3 or  jetonJ2.negociationGarde1 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 5 or  jetonJ2.negociationGarde1 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 7 or  jetonJ2.negociationGarde1 == 8 or  jetonJ2.negociationGarde1 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 10 or  jetonJ2.negociationGarde1 == 11 or  jetonJ2.negociationGarde1 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 13 or  jetonJ2.negociationGarde1 == 14 or  jetonJ2.negociationGarde1 == 15 or jetonJ2.negociationGarde1 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 17 or  jetonJ2.negociationGarde1 == 18 or  jetonJ2.negociationGarde1 == 19 or jetonJ2.negociationGarde1 == 20 or jetonJ2.negociationGarde1 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationGarde2 != 0 %}
+            {% if jetonJ2.negociationGarde2 == 1 or  jetonJ2.negociationGarde2 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 3 or  jetonJ2.negociationGarde2 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 5 or  jetonJ2.negociationGarde2 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 7 or  jetonJ2.negociationGarde2 == 8 or  jetonJ2.negociationGarde2 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 10 or  jetonJ2.negociationGarde2 == 11 or  jetonJ2.negociationGarde2 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 13 or  jetonJ2.negociationGarde2 == 14 or  jetonJ2.negociationGarde2 == 15 or jetonJ2.negociationGarde2 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 17 or  jetonJ2.negociationGarde2 == 18 or  jetonJ2.negociationGarde2 == 19 or jetonJ2.negociationGarde2 == 20 or jetonJ2.negociationGarde2 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+    {% elseif user.id == joueur2.id %}
+        {% if jetonJ1.monopoleRecu != 0 %}
+            {% if jetonJ1.monopoleRecu == 1 or  jetonJ1.monopoleRecu == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 3 or  jetonJ1.monopoleRecu == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 5 or  jetonJ1.monopoleRecu == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 7 or  jetonJ1.monopoleRecu == 8 or  jetonJ1.monopoleRecu == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 10 or  jetonJ1.monopoleRecu == 11 or  jetonJ1.monopoleRecu == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 13 or  jetonJ1.monopoleRecu == 14 or  jetonJ1.monopoleRecu == 15 or jetonJ1.monopoleRecu == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 17 or  jetonJ1.monopoleRecu == 18 or  jetonJ1.monopoleRecu == 19 or jetonJ1.monopoleRecu == 20 or jetonJ1.monopoleRecu == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.monopoleGarde1 != 0 %}
+            {% if jetonJ1.monopoleGarde1 == 1 or  jetonJ1.monopoleGarde1 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 3 or  jetonJ1.monopoleGarde1 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 5 or  jetonJ1.monopoleGarde1 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 7 or  jetonJ1.monopoleGarde1 == 8 or  jetonJ1.monopoleGarde1 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 10 or  jetonJ1.monopoleGarde1 == 11 or  jetonJ1.monopoleGarde1 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 13 or  jetonJ1.monopoleGarde1 == 14 or  jetonJ1.monopoleGarde1 == 15 or jetonJ1.monopoleGarde1 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 17 or  jetonJ1.monopoleGarde1 == 18 or  jetonJ1.monopoleGarde1 == 19 or jetonJ1.monopoleGarde1 == 20 or jetonJ1.monopoleGarde1 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.monopoleGarde2 != 0 %}
+            {% if jetonJ1.monopoleGarde2 == 1 or  jetonJ1.monopoleGarde2 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 3 or  jetonJ1.monopoleGarde2 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 5 or  jetonJ1.monopoleGarde2 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 7 or  jetonJ1.monopoleGarde2 == 8 or  jetonJ1.monopoleGarde2 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 10 or  jetonJ1.monopoleGarde2 == 11 or  jetonJ1.monopoleGarde2 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 13 or  jetonJ1.monopoleGarde2 == 14 or  jetonJ1.monopoleGarde2 == 15 or jetonJ1.monopoleGarde2 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 17 or  jetonJ1.monopoleGarde2 == 18 or  jetonJ1.monopoleGarde2 == 19 or jetonJ1.monopoleGarde2 == 20 or jetonJ1.monopoleGarde2 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationRecu1 != 0 %}
+            {% if jetonJ1.negociationRecu1 == 1 or  jetonJ1.negociationRecu1 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 3 or  jetonJ1.negociationRecu1 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 5 or  jetonJ1.negociationRecu1 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 7 or  jetonJ1.negociationRecu1 == 8 or  jetonJ1.negociationRecu1 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 10 or  jetonJ1.negociationRecu1 == 11 or  jetonJ1.negociationRecu1 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 13 or  jetonJ1.negociationRecu1 == 14 or  jetonJ1.negociationRecu1 == 15 or jetonJ1.negociationRecu1 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 17 or  jetonJ1.negociationRecu1 == 18 or  jetonJ1.negociationRecu1 == 19 or jetonJ1.negociationRecu1 == 20 or jetonJ1.negociationRecu1 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationRecu2 != 0 %}
+            {% if jetonJ1.negociationRecu2 == 1 or  jetonJ1.negociationRecu2 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 3 or  jetonJ1.negociationRecu2 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 5 or  jetonJ1.negociationRecu2 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 7 or  jetonJ1.negociationRecu2 == 8 or  jetonJ1.negociationRecu2 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 10 or  jetonJ1.negociationRecu2 == 11 or  jetonJ1.negociationRecu2 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 13 or  jetonJ1.negociationRecu2 == 14 or  jetonJ1.negociationRecu2 == 15 or jetonJ1.negociationRecu2 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 17 or  jetonJ1.negociationRecu2 == 18 or  jetonJ1.negociationRecu2 == 19 or jetonJ1.negociationRecu2 == 20 or jetonJ1.negociationRecu2 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationGarde1 != 0 %}
+            {% if jetonJ1.negociationGarde1 == 1 or  jetonJ1.negociationGarde1 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 3 or  jetonJ1.negociationGarde1 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 5 or  jetonJ1.negociationGarde1 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 7 or  jetonJ1.negociationGarde1 == 8 or  jetonJ1.negociationGarde1 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 10 or  jetonJ1.negociationGarde1 == 11 or  jetonJ1.negociationGarde1 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 13 or  jetonJ1.negociationGarde1 == 14 or  jetonJ1.negociationGarde1 == 15 or jetonJ1.negociationGarde1 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 17 or  jetonJ1.negociationGarde1 == 18 or  jetonJ1.negociationGarde1 == 19 or jetonJ1.negociationGarde1 == 20 or jetonJ1.negociationGarde1 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationGarde2 != 0 %}
+            {% if jetonJ1.negociationGarde2 == 1 or  jetonJ1.negociationGarde2 == 2 %}
+                <img class="score-1 adv" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 3 or  jetonJ1.negociationGarde2 == 4 %}
+                <img class="score-2 adv" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 5 or  jetonJ1.negociationGarde2 == 6 %}
+                <img class="score-3 adv" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 7 or  jetonJ1.negociationGarde2 == 8 or  jetonJ1.negociationGarde2 == 9 %}
+                <img class="score-4 adv" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 10 or  jetonJ1.negociationGarde2 == 11 or  jetonJ1.negociationGarde2 == 12 %}
+                <img class="score-5 adv" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 13 or  jetonJ1.negociationGarde2 == 14 or  jetonJ1.negociationGarde2 == 15 or jetonJ1.negociationGarde2 == 16 %}
+                <img class="score-6 adv" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 17 or  jetonJ1.negociationGarde2 == 18 or  jetonJ1.negociationGarde2 == 19 or jetonJ1.negociationGarde2 == 20 or jetonJ1.negociationGarde2 == 21 %}
+                <img class="score-7 adv" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+
+        {% if jetonJ2.monopoleRecu != 0 %}
+            {% if jetonJ2.monopoleRecu == 1 or  jetonJ2.monopoleRecu == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 3 or  jetonJ2.monopoleRecu == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 5 or  jetonJ2.monopoleRecu == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 7 or  jetonJ2.monopoleRecu == 8 or  jetonJ2.monopoleRecu == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 10 or  jetonJ2.monopoleRecu == 11 or  jetonJ2.monopoleRecu == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 13 or  jetonJ2.monopoleRecu == 14 or  jetonJ2.monopoleRecu == 15 or jetonJ2.monopoleRecu == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 17 or  jetonJ2.monopoleRecu == 18 or  jetonJ2.monopoleRecu == 19 or jetonJ2.monopoleRecu == 20 or jetonJ2.monopoleRecu == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.monopoleGarde1 != 0 %}
+            {% if jetonJ2.monopoleGarde1 == 1 or  jetonJ2.monopoleGarde1 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 3 or  jetonJ2.monopoleGarde1 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 5 or  jetonJ2.monopoleGarde1 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 7 or  jetonJ2.monopoleGarde1 == 8 or  jetonJ2.monopoleGarde1 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 10 or  jetonJ2.monopoleGarde1 == 11 or  jetonJ2.monopoleGarde1 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 13 or  jetonJ2.monopoleGarde1 == 14 or  jetonJ2.monopoleGarde1 == 15 or jetonJ2.monopoleGarde1 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 17 or  jetonJ2.monopoleGarde1 == 18 or  jetonJ2.monopoleGarde1 == 19 or jetonJ2.monopoleGarde1 == 20 or jetonJ2.monopoleGarde1 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.monopoleGarde2 != 0 %}
+            {% if jetonJ2.monopoleGarde2 == 1 or  jetonJ2.monopoleGarde2 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 3 or  jetonJ2.monopoleGarde2 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 5 or  jetonJ2.monopoleGarde2 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 7 or  jetonJ2.monopoleGarde2 == 8 or  jetonJ2.monopoleGarde2 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 10 or  jetonJ2.monopoleGarde2 == 11 or  jetonJ2.monopoleGarde2 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 13 or  jetonJ2.monopoleGarde2 == 14 or  jetonJ2.monopoleGarde2 == 15 or jetonJ2.monopoleGarde2 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 17 or  jetonJ2.monopoleGarde2 == 18 or  jetonJ2.monopoleGarde2 == 19 or jetonJ2.monopoleGarde2 == 20 or jetonJ2.monopoleGarde2 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationRecu1 != 0 %}
+            {% if jetonJ2.negociationRecu1 == 1 or  jetonJ2.negociationRecu1 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 3 or  jetonJ2.negociationRecu1 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 5 or  jetonJ2.negociationRecu1 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 7 or  jetonJ2.negociationRecu1 == 8 or  jetonJ2.negociationRecu1 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 10 or  jetonJ2.negociationRecu1 == 11 or  jetonJ2.negociationRecu1 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 13 or  jetonJ2.negociationRecu1 == 14 or  jetonJ2.negociationRecu1 == 15 or jetonJ2.negociationRecu1 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 17 or  jetonJ2.negociationRecu1 == 18 or  jetonJ2.negociationRecu1 == 19 or jetonJ2.negociationRecu1 == 20 or jetonJ2.negociationRecu1 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationRecu2 != 0 %}
+            {% if jetonJ2.negociationRecu2 == 1 or  jetonJ2.negociationRecu2 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 3 or  jetonJ2.negociationRecu2 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 5 or  jetonJ2.negociationRecu2 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 7 or  jetonJ2.negociationRecu2 == 8 or  jetonJ2.negociationRecu2 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 10 or  jetonJ2.negociationRecu2 == 11 or  jetonJ2.negociationRecu2 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 13 or  jetonJ2.negociationRecu2 == 14 or  jetonJ2.negociationRecu2 == 15 or jetonJ2.negociationRecu2 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 17 or  jetonJ2.negociationRecu2 == 18 or  jetonJ2.negociationRecu2 == 19 or jetonJ2.negociationRecu2 == 20 or jetonJ2.negociationRecu2 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationGarde1 != 0 %}
+            {% if jetonJ2.negociationGarde1 == 1 or  jetonJ2.negociationGarde1 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 3 or  jetonJ2.negociationGarde1 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 5 or  jetonJ2.negociationGarde1 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 7 or  jetonJ2.negociationGarde1 == 8 or  jetonJ2.negociationGarde1 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 10 or  jetonJ2.negociationGarde1 == 11 or  jetonJ2.negociationGarde1 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 13 or  jetonJ2.negociationGarde1 == 14 or  jetonJ2.negociationGarde1 == 15 or jetonJ2.negociationGarde1 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 17 or  jetonJ2.negociationGarde1 == 18 or  jetonJ2.negociationGarde1 == 19 or jetonJ2.negociationGarde1 == 20 or jetonJ2.negociationGarde1 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationGarde2 != 0 %}
+            {% if jetonJ2.negociationGarde2 == 1 or  jetonJ2.negociationGarde2 == 2 %}
+                <img class="score-1 own" src="{{ asset('assets/images/pointsObj/2_lehel.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 3 or  jetonJ2.negociationGarde2 == 4 %}
+                <img class="score-2 own" src="{{ asset('assets/images/pointsObj/2_mount.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 5 or  jetonJ2.negociationGarde2 == 6 %}
+                <img class="score-3 own" src="{{ asset('assets/images/pointsObj/2_essem.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 7 or  jetonJ2.negociationGarde2 == 8 or  jetonJ2.negociationGarde2 == 9 %}
+                <img class="score-4 own" src="{{ asset('assets/images/pointsObj/3_nemo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 10 or  jetonJ2.negociationGarde2 == 11 or  jetonJ2.negociationGarde2 == 12 %}
+                <img class="score-5 own" src="{{ asset('assets/images/pointsObj/3_tukk.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 13 or  jetonJ2.negociationGarde2 == 14 or  jetonJ2.negociationGarde2 == 15 or jetonJ2.negociationGarde2 == 16 %}
+                <img class="score-6 own" src="{{ asset('assets/images/pointsObj/4_logo.svg') }}">
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 17 or  jetonJ2.negociationGarde2 == 18 or  jetonJ2.negociationGarde2 == 19 or jetonJ2.negociationGarde2 == 20 or jetonJ2.negociationGarde2 == 21 %}
+                <img class="score-7 own" src="{{ asset('assets/images/pointsObj/5_epsylon.svg') }}">
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    <div class="card-stack">
+    	<img src="{{ asset('assets/images/dos_pioche/carte_back.png') }}">
+    </div>
+    
+    <div class="recap">	
+	    {% if partieManche==2 or partieManche == 3 %}
+	        {% if user.id == joueur1.id %}
+	            <h3><strong>{{ user.username }} :</strong> {{ scoreJ1 }}</h3>
+	            <h3><strong>{{ adversaire.username }} :</strong> {{ scoreJ2 }}</h3>
+	        {% elseif user.id == joueur2.id%}
+	            <h3><strong>{{ user.username }} :</strong> {{ scoreJ2 }}</h3>
+	            <h3><strong>{{ adversaire.username }} :</strong> {{ scoreJ1 }}</h3>
+	        {% endif %}
+	    {% endif %}
+   	</div>
+
+
+    <!--Formulaires pour les différentes actions-->
+    {% if(user.id == idUserTour) %}
+    {% if(negociationUser != 0) and (monopoleUser != 0) and (abandon != 0) and (pacte != 0) and (partieFinie == 13)%}
+    	<div class="end">
+	        {% if user.id == joueur1.id %}
+	            {% if scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+	                <h1>DÉFAITE</h1>
+	                <div><h3>{{ scoreJ2 }}</h3><h2>VS</h2><h3>{{ scoreJ1 }}</h3></div>
+	                <div class="end-bg loose"></div>
+	            {% elseif scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+	                <h1>DÉFAITE</h1>
+	                <div><h3>{{ scoreJ1 }}</h3><h2>VS</h2><h3>{{ scoreJ2 }}</h3></div>
+	                <div class="end-bg loose"></div>
+                {% else %}
+                    <script  type="text/javascript">refresh()</script>
+	            {% endif %}
+	        {% elseif user.id == joueur2.id %}
+	            {% if scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+	                <h1>VICTOIRE</h1>
+	                <div><h3>{{ scoreJ2 }}</h3><h2>VS</h2><h3>{{ scoreJ1 }}</h3></div>
+	                <div class="end-bg victory"></div>
+	            {% elseif scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+	                <h1>DÉFAITE</h1>
+	                <div><h3>{{ scoreJ2 }}</h3><h2>VS</h2><h3>{{ scoreJ1 }}</h3></div>
+	                <div class="end-bg loose"></div>
+                {% else %}
+                    <script  type="text/javascript">refresh()</script>
+	            {% endif %}
+	        {% endif %}
+	        <a class="button leave" href="{{ path('nouvelle_partie')}}">
+	        	<p>QUITTER</p>
+	        	<img src="{{asset('assets/images/play_button.svg')}}">
+	        </a>
+    	</div>
+    {% else %}
+        {% if(etatMonopole ==1 and nbCarteMonopole == 3) %}
+	        <div class="choose">
+	            <form action="{{ path('valid_monopole', {'id' : partie.id} ) }}" method="post">
+	                <div class="radio" id="radioMonopole">
+	                    {% for carteM in carteMonopole %}
+	                        <input type="radio" value="{{ carteM }}" name="carteMonopole">
+	                    {% endfor %}
+	                </div>
+	                {% for test in allCarteMonopole %}
+	                    {% for test2 in test %}
+	                   		<div class="choose-item">
+	                        	<img class="card-choose" src="{{ asset('assets/images/carte_objet/') }}{{ test2.image }}">
+	                        </div>
+	                    {% endfor %}
+	                {% endfor %}
+	                <input type="submit" class="btn btn-primary" name="id" value="{{ partie.id }}">
+	            </form>
+	            <button class="action-validate"><p>VALIDER</p><img src="{{asset("assets/images/validate_button.svg")}}"></button>
+	        </div>
+        {% endif %}
+
+        {% if(etatNegociation ==1 and nbCarteNegociation == 4) %}
+        	<div class="choose">
+	            <form action="{{ path('valid_negociation', {'id' : partie.id} ) }}" method="post">
+	            	<div class="radio">
+	            		<input type="radio" value="paire1" name="carteNegociation">
+	            		<input type="radio" value="paire2" name="carteNegociation">
+	            	</div>
+	                <div class="choose-item paire">
+	                    {% for test in paire1Negociation %}
+	                        {% for test2 in test %}
+	                          	<img class="card-choose" src="{{ asset('assets/images/carte_objet/') }}{{ test2.image }}">
+	                        {% endfor %}
+	                    {% endfor %}
+	                </div>
+	                <div class="choose-item paire">
+	                    {% for test in paire2Negociation %}
+	                        {% for test2 in test %}
+	                        	<img class="card-choose" src="{{ asset('assets/images/carte_objet/') }}{{ test2.image }}" style="width: 100px">
+	                        {% endfor %}
+	                    {% endfor %}
+	                </div>
+	                <input type="submit" class="btn btn-primary" name="id" value="{{ partie.id }}">
+	            </form>
+	            <button class="action-validate"><p>VALIDER</p><img src="{{asset("assets/images/validate_button.svg")}}"></button>
+	        </div>
+        {% endif %}
+
+        <div id="actions" class="actions">
+        	<h3><strong>{{adversaire.username}}</strong></h3>
+        	<h1>VS</h1>
+        	<h3><strong>{{user.username}}</strong></h3>
+        {% if(pacte == 0) %}
+            <form class="pacte" action="{{ path('action_pacte', {'id' : partie.id}) }}" method="post">
+                <fieldset>
+                    <input type="text" id="cartePacte" name="cartePacte" placeholder="Saisir l'ID de la carte">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Pacte
+                    </button>
+                </fieldset>
+            </form>
+            <img src="{{ asset('assets/images/actions/pacte.png') }}" class="actions-item actions-item-active actions-item-1">
+        {% else %}
+            <img src="{{ asset('assets/images/actions/pacte_use.png') }}" class="actions-item actions-item-inactive actions-item-1">
+        {% endif %}
+        {% if(abandon == 0) %}
+            <form class="abandon" action="{{ path('action_abandon', {'id' : partie.id}) }}" method="post"> <!-- path('action_abandon') -->
+                <fieldset>
+                    <input type="text" id="carteAbandon1" name="carteAbandon1" placeholder="Saisir l'ID de la 1ère carte">
+                    <input type="text" id="carteAbandon2" name="carteAbandon2" placeholder="Saisir l'ID de la 2ème carte">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Abandon
+                    </button>
+                </fieldset>
+            </form>
+            <img src="{{ asset('assets/images/actions/abandon.png') }}" class="actions-item actions-item-active actions-item-2">
+        {% else %}
+            <img src="{{ asset('assets/images/actions/abandon_use.png') }}" class="actions-item actions-item-inactive actions-item-2">
+        {% endif %}
+        {% if(monopoleUser == 0) %}
+            <form class="monopole" action="{{ path('action_monopole', {'id' : partie.id}) }}" method="post"> <!-- path('action_monopole') -->
+                <fieldset>
+                    <input type="text" id="carteMonopole1" name="carteMonopole1" placeholder="Saisir l'ID de la 1ère carte">
+                    <input type="text" id="carteMonopole2" name="carteMonopole2" placeholder="Saisir l'ID de la 2ème carte">
+                    <input type="text" id="carteMonopole3" name="carteMonopole3" placeholder="Saisir l'ID de la 3ème carte">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Monopole
+                    </button>
+                </fieldset>
+            </form>
+            <img src="{{ asset('assets/images/actions/monopole.png') }}" class="actions-item actions-item-active actions-item-3">
+        {% else %}
+            <img src="{{ asset('assets/images/actions/monopole_use.png') }}" class="actions-item actions-item-inactive actions-item-3">
+        {% endif %}
+        {% if(negociationUser == 0) %}
+            <form class="negociation" action="{{ path('action_negociation', {'id': partie.id}) }}" method="post"> <!-- path('action_negociation') -->
+                <fieldset>
+                    <input type="text" id="carteNegociation1" name="carteNegociation1" placeholder="Paire 1 - 1er ID">
+                    <input type="text" id="carteNegociation2" name="carteNegociation2" placeholder="Paire 1 - 2ème ID">
+                    &nbsp&nbsp&nbsp
+                    <input type="text" id="carteNegociation3" name="carteNegociation3" placeholder="Paire 2 - 1er ID">
+                    <input type="text" id="carteNegociation4" name="carteNegociation4" placeholder="Paire 2 - 2ème ID">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Négociation
+                    </button>
+                </fieldset>
+            </form>
+            <img src="{{ asset('assets/images/actions/negociation.png') }}" class="actions-item actions-item-active actions-item-4">
+        {% else %}
+            <img src="{{ asset('assets/images/actions/negociation_use.png') }}" class="actions-item actions-item-inactive actions-item-4">
+        {% endif %}
+        {% endif %}
+
+    {% elseif(negociationUser != 0) and (monopoleUser != 0) and (abandon != 0) and (pacte != 0) and (partieFinie == 13)%}
+    <div class="end">
+        {% if user.id == joueur1.id %}
+            {% if scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+                <h1>DÉFAITE</h1>
+	            <div><h3>{{ scoreJ1 }}</h3><h2>VS</h2><h3>{{ scoreJ2 }}</h3></div>
+	            <div class="end-bg loose"></div>
+            {% elseif scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+                <h1>DÉFAITE</h1>
+	            <div><h3>{{ scoreJ2 }}</h3><h2>VS</h2><h3>{{ scoreJ1 }}</h3></div>
+	            <div class="end-bg loose"></div>
+            {% else %}
+                <script  type="text/javascript">refresh()</script>
+            {% endif %}
+        {% elseif user.id == joueur2.id %}
+            {% if scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+                <h1>VICTOIRE</h1>
+	            <div><h3>{{ scoreJ2 }}</h3><h2>VS</h2><h3>{{ scoreJ1 }}</h3></div>
+	            <div class="end-bg victory"></div>
+            {% elseif scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+                <h1>DÉFAITE</h1>
+	            <div><h3>{{ scoreJ1 }}</h3><h2>VS</h2><h3>{{ scoreJ2 }}</h3></div>
+	            <div class="end-bg loose"></div>
+            {% else %}
+                <script  type="text/javascript">refresh()</script>
+            {% endif %}
+        {% endif %}
+        <a class="button leave" href="{{ path('nouvelle_partie')}}">
+        	<p>QUITTER</p>
+        	<img src="{{asset('assets/images/play_button.svg')}}">
+        </a>
+    </div>
+    {% else %}
+        <div id="actions" class="actions">
+        	<h3><strong>{{adversaire.username}}</strong></h3>
+        	<h1>VS</h1>
+        	<h3><strong>{{user.username}}</strong></h3>
+	        {% if(pacte == 0) %}
+	            <img src="{{ asset('assets/images/actions/pacte.png') }}" class="actions-item out-turn actions-item-active actions-item-1">
+	        {% else %}
+	            <img src="{{ asset('assets/images/actions/pacte_use.png') }}" class="actions-item out-turn actions-item-inactive actions-item-1">
+	        {% endif %}
+	        {% if(abandon == 0) %}
+	            <img src="{{ asset('assets/images/actions/abandon.png') }}" class="actions-item out-turn actions-item-active actions-item-2">
+	        {% else %}
+	            <img src="{{ asset('assets/images/actions/abandon_use.png') }}" class="actions-item out-turn actions-item-inactive actions-item-2">
+	        {% endif %}
+	        {% if(monopoleUser == 0) %}
+	            <img src="{{ asset('assets/images/actions/monopole.png') }}" class="actions-item out-turn actions-item-active actions-item-3">
+	        {% else %}
+	            <img src="{{ asset('assets/images/actions/monopole_use.png') }}" class="actions-item out-turn actions-item-inactive actions-item-3">
+	        {% endif %}
+	        {% if(negociationUser == 0) %}
+	            <img src="{{ asset('assets/images/actions/negociation.png') }}" class="actions-item out-turn actions-item-active actions-item-4">
+	        {% else %}
+	            <img src="{{ asset('assets/images/actions/negociation_use.png') }}" class="actions-item out-turn actions-item-inactive actions-item-4">
+	        {% endif %}
+    	{% endif %}
+    </div>
+
+    <div class="content-card">
+    {% if(user.id == joueur1.id) %}
+        {% for carte in partie.J1Main %}
+            <div class="card" data-val="{{ objets[carte].id }}">
+                <div class="card-anim">
+                    <img class="card-face" src="{{ asset('assets/images/carte_objet/') }}{{ objets[carte].image }}">
+                </div>
+            </div>
+            
+        {% endfor %}
+    {% elseif(user.id == joueur2.id) %}
+        {% for carte in partie.J2Main %}
+            <div class="card" data-val="{{ objets[carte].id }}">
+                <div class="card-anim">
+                    <img class="card-face" src="{{ asset('assets/images/carte_objet/') }}{{ objets[carte].image }}">
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+    <div class="hand">
+
+    </div>
+    <div class="alert">
+    	<p></p>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
+    <script src="{{asset('assets/js/particles.js')}}"></script>
+	<script src="{{asset('assets/js/particles.json')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSPlugin.min.js"></script>
+    <script type="text/javascript">
+
+            var next;
+            var cardId;
+            var endAnim;
+            var newLeft;
+            var newTop;
+            var time;
+            var midCount;
+            var newDeg;
+            var topDecay;
+            var takenId;
+            var takenBy;
+            var dropId;
+
+            takenBy = [];
+            midCount = 0;
+            count = 0;
+            endAnim = 1;
+            next = 0;
+
+
+
+            function updatePos(time){
+                $('.handed').each(function(){
+                    cardId = $(this).index();
+                    midCount = ($('.card').length) / 2;
+                    newDeg = -(3 * (midCount - cardId));
+                    topDecay = -50 + (5 * Math.abs((midCount - cardId) - 0.5));
+                    TweenMax.to($('.hand-elem').eq(cardId), 0, {yPercent: (topDecay+50)+'%'});
+                    newLeft = ($('.hand-elem').eq(cardId).offset().left - $('.content-card').offset().left) + (($('.hand-elem').width()) / 2) - 100;
+                    newTop = ($('.hand-elem').eq(cardId).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 100;
+                    TweenMax.to($(this), time,{left: newLeft+'px', top: newTop+'px', height: '180px'});
+                    TweenMax.to($(this).find('.card-anim'), time, {transform: 'rotateZ('+newDeg+'deg)', xPercent: '-50%', top: '0'});
+                });
+            }
+
+            $('.card').each(function(){
+                $('.hand').append('<div class="hand-elem"></div>');
+                $('.card').draggable();
+                $('.card').eq(next).addClass('handed');
+                cardId = $('.hand-elem').eq(next).index();
+                newLeft = ($('.hand-elem').eq(next).offset().left - $('.content-card').offset().left) + (($('.hand-elem').width()) / 2) - 100;
+                newTop = ($('.hand-elem').eq(next).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 250;
+
+                updatePos(0);
+                TweenMax.to($('.card').eq(next), 0, {left: newLeft+'px', top: newTop+'px', transform: 'translateY(0)'});
+                updatePos(0);
+                next++;
+            });
+
+            $(window).resize(function(){
+                $('.drop-item').each(function(){
+                    dropId = $('.drop-item').index(this);
+                    newLeft = ($(this).offset().left - $('.content-card').offset().left) + 10;
+                    newTop = ($(this).offset().top - $('.content-card').offset().top) + 10;
+                    TweenMax.to($('.card').eq(takenBy[$(this).index()]), 0,{left: newLeft+'px', top: newTop+'px'});
+                });
+                updatePos(0);
+            });
+
+
+            $(document).on('mouseover', '.handed', function(){
+                if($(this).is('.ui-draggable-dragging')){
+
+                }
+                else{
+                    cardId = $(this).index();           
+                    TweenMax.to($(this), 0.1,{top: '0px',height: '250px'});
+                    TweenMax.to($(this).find('.card-anim'), 0.1,{transform: 'rotateZ(0deg) scale(1.2)', xPercent: '-50%'});
+                    $(this).css('z-index','1');
+                    $('.card').not(this).css('pointer-events', 'auto');
+                }
+            });
+
+            $(document).on('mouseout', '.handed', function(){
+                if($(this).is('.ui-draggable-dragging')){
+
+                }
+                else{
+                    cardId = $(this).index();
+                    midCount = ($('.card').length) / 2;
+                    newDeg = -(3 * (midCount - cardId));
+                    topDecay = -50 + (5 * Math.abs((midCount - cardId) - 0.5));
+
+                    newTop = ($('.hand-elem').eq(cardId).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 100;                  
+                    TweenMax.to($(this), 0.2,{top: newTop+'px',height: '180px'});
+                    TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ('+newDeg+'deg) scale(1)', xPercent: '-50%'});
+                    $(this).css('z-index','0');
+                    $('.card').not(this).css('pointer-events', 'auto');
+                }
+            });
+            $(document).on('mousedown', '.handed', function(){
+                TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ(0deg) scale(0.7)', xPercent: '-50%'});
+                $('.card').not(this).css('pointer-events', 'none');
+                $(this).css('z-index','1');
+            });
+            $(document).on('mouseup', '.handed', function(){
+                TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ(0deg) scale(1.2)', xPercent: '-50%'});
+                $('.card').not(this).css('pointer-events', 'auto');
+            });
+
+            $(document).on('dragstart', '.card', function(){
+                $(this).addClass('handed').removeClass('placed').css('z-index','1');
+            });
+
+            $(document).on('dragstop', '.handed', function(){
+                cardId = $(this).index();
+                midCount = ($('.card').length) / 2;
+                newDeg = -(3 * (midCount - cardId));
+                topDecay = -50 + (5 * Math.abs((midCount - cardId) - 0.5));
+
+                TweenMax.to($('.hand-elem').eq(cardId), 0, {yPercent: (topDecay+50)+'%'});
+                newLeft = ($('.hand-elem').eq(cardId).offset().left - $('.content-card').offset().left) + (($('.hand-elem').width()) / 2) - 100;
+                newTop = ($('.hand-elem').eq(cardId).offset().top - $('.content-card').offset().top) + (($('.hand-elem').height()) / 2) - 100;                  
+                TweenMax.to($(this), 0.2,{left: newLeft+'px', top: newTop+'px',height: '180px', width: '130px'});
+                TweenMax.to($(this).find('.card-anim'), 0.2,{transform: 'rotateZ('+newDeg+'deg) scale(1)', xPercent: '-50%', top: '0'});
+                $(this).css('z-index','0');
+                $('.card').not(this).css('pointer-events', 'auto');
+
+            });
+            
+            $(function(){
+                $('.drop-item').droppable({
+                    out: function(){
+                        $(this).droppable('option', 'accept', '.card');
+                    }
+                });
+            });
+
+
+            $(document).on('drop', '.drop-item', function(){
+                newLeft = ($(this).offset().left - $('.content-card').offset().left) + 10;
+                newTop = ($(this).offset().top - $('.content-card').offset().top) + 10;
+                takenId = $('.ui-draggable-dragging').index();
+                takenBy[$(this).index()] = takenId;
+                $(this).droppable('option', 'accept', $('.card').eq(takenId));
+                TweenMax.to($('.ui-draggable-dragging'), 0.2,{left: newLeft+'px', top: newTop+'px', height: '140px', width: '100px'});
+                TweenMax.to($('.ui-draggable-dragging').find('.card-anim'), 0.2,{transform: 'rotateZ(0deg) scale(1)', xPercent: '-50%'});
+                $('.ui-draggable-dragging').removeClass('handed').addClass('placed').css('z-index','0');
+                $('.handed').css('pointer-events', 'auto');
+            });
+
+            $(document).on('drop', '.action-1 .drop-item', function(){
+            	dropId = $(this).index();
+            	$('.pacte input').eq(dropId).val($('.ui-draggable-dragging').attr('data-val'));
+            });
+            $(document).on('drop', '.action-2 .drop-item', function(){
+            	dropId = $(this).index();
+            	$('.abandon input').eq(dropId).val($('.ui-draggable-dragging').attr('data-val')).attr('data-val', 'oui');
+            });
+            $(document).on('drop', '.action-3 .drop-item', function(){
+            	dropId = $(this).index();
+            	$('.monopole input').eq(dropId).val($('.ui-draggable-dragging').attr('data-val'));
+            });
+            $(document).on('drop', '.action-4 .drop-item', function(){
+            	dropId = $(this).index();
+            	$('.negociation input').eq(dropId).val($('.ui-draggable-dragging').attr('data-val'));
+            });
+
+            $('.actions-item-1').click(function(){
+            	if($(this).hasClass('out-turn') || $('.choose').length){
+
+            	}
+            	else if($(this).hasClass('actions-item-active')){
+            		if($('.placed').length <= 0){
+	                    $('.action').remove();
+	                    $('.content').append('<div class="action action-1"><div class="drop-item"></div><button class="action-validate"><p>VALIDER</p><img src="{{asset("assets/images/validate_button.svg")}}"></button></div>');
+	                    $('.drop-item').droppable({
+	                        out: function(){
+	                            $(this).droppable('option', 'accept', '.card');
+	                        }
+	                    });
+	                }
+            	}
+                
+            });
+            $('.actions-item-2').click(function(){
+            	if($(this).hasClass('out-turn') || $('.choose').length){
+
+            	}
+            	else if($(this).hasClass('actions-item-active')){
+	                if($('.placed').length <= 0){
+	                    $('.action').remove();
+	                    $('.content').append('<div class="action action-2"><div class="drop-item"></div><div class="drop-item"></div><button class="action-validate"><p>VALIDER</p><img src="{{asset("assets/images/validate_button.svg")}}"></button></div>');
+	                    $('.drop-item').droppable({
+	                        out: function(){
+	                            $(this).droppable('option', 'accept', '.card');
+	                        }
+	                    });
+	                }
+                }
+            });
+            $('.actions-item-3').click(function(){
+            	if($(this).hasClass('out-turn') || $('.choose').length){
+            		
+            	}
+            	else if($(this).hasClass('actions-item-active')){
+	                if($('.placed').length <= 0){
+	                    $('.action').remove();
+	                    $('.content').append('<div class="action action-3"><div class="drop-item"></div><div class="drop-item"></div><div class="drop-item"></div><button class="action-validate"><p>VALIDER</p><img src="{{asset("assets/images/validate_button.svg")}}"></button></div>');
+	                    $('.drop-item').droppable({
+	                        out: function(){
+	                            $(this).droppable('option', 'accept', '.card');
+	                        }
+	                    });
+	                }
+	            }
+            });
+            $('.actions-item-4').click(function(){
+            	if($(this).hasClass('out-turn') || $('.choose').length){
+
+            	}
+            	else if($(this).hasClass('actions-item-active')){
+	                if($('.placed').length <= 0){
+	                    $('.action').remove();
+	                    $('.content').append('<div class="action action-4"><div class="drop-item"></div><div class="drop-item"></div><div class="drop-item"></div><div class="drop-item"></div><button class="action-validate"><p>VALIDER</p><img src="{{asset("assets/images/validate_button.svg")}}"></button></div>');
+	                    $('.drop-item').droppable({
+	                        out: function(){
+	                            $(this).droppable('option', 'accept', '.card');
+	                        }
+	                    });
+	                }
+	            }
+            });
+
+			$(document).on('click', '.action-1 .action-validate', function(){
+					var empty = $('.pacte input').filter(function() {
+			        return this.value === "";
+			    });
+			    if(empty.length) {
+			    }
+			    else{
+					$('.pacte').find('button[type="submit"]').trigger('click');
+			    }
+			});
+			$(document).on('click', '.action-2 .action-validate', function(){
+					var empty = $('.abandon input').filter(function() {
+			        return this.value === "";
+			    });
+			    if(empty.length) {
+			    }
+			    else{
+					$('.abandon').find('button[type="submit"]').trigger('click');
+			    }
+			});
+			$(document).on('click', '.action-3 .action-validate', function(){
+			   	var empty = $('.monopole input').filter(function() {
+			        return this.value === "";
+			    });
+			    if(empty.length) {
+			    }
+			    else{
+					$('.monopole').find('button[type="submit"]').trigger('click');
+			    }
+			});
+			$(document).on('click', '.action-4 .action-validate', function(){
+			   	var empty = $('.negociation input').filter(function() {
+			        return this.value === "";
+			    });
+			    if(empty.length) {
+			    }
+			    else{
+					$('.negociation').find('button[type="submit"]').trigger('click');
+			    }
+			});
+
+
+        	$(document).on('click', '.card-choose', function(){
+
+        		var chooseId = $(this).parent().index() - 1;
+        		$('.radio').find('input').eq(chooseId).prop("checked", true);
+        		$('.choose-item').css({background: 'rgba(0, 0, 0, 0.2)'});
+        		$(this).parent().css({background: 'rgba(65, 229, 11, 0.2)'});
+        	});
+        	$(document).on('click', '.choose button', function(){
+        		if($('.choose').find('input[type="radio"]').is(':checked')){
+        			$('.choose').find('input[type="submit"]').trigger('click');
+        		}
+        	});
+
+        	$('.score-1.own').appendTo($('.objectifs-1 .own-scores')).css({display: 'inline-block'});
+        	$('.score-2.own').appendTo($('.objectifs-2 .own-scores')).css({display: 'inline-block'});
+        	$('.score-3.own').appendTo($('.objectifs-3 .own-scores')).css({display: 'inline-block'});
+        	$('.score-4.own').appendTo($('.objectifs-4 .own-scores')).css({display: 'inline-block'});
+        	$('.score-5.own').appendTo($('.objectifs-5 .own-scores')).css({display: 'inline-block'});
+        	$('.score-6.own').appendTo($('.objectifs-6 .own-scores')).css({display: 'inline-block'});
+        	$('.score-7.own').appendTo($('.objectifs-7 .own-scores')).css({display: 'inline-block'});
+
+        	$('.score-1.adv').appendTo($('.objectifs-1 .adv-scores')).css({display: 'inline-block'});
+        	$('.score-2.adv').appendTo($('.objectifs-2 .adv-scores')).css({display: 'inline-block'});
+        	$('.score-3.adv').appendTo($('.objectifs-3 .adv-scores')).css({display: 'inline-block'});
+        	$('.score-4.adv').appendTo($('.objectifs-4 .adv-scores')).css({display: 'inline-block'});
+        	$('.score-5.adv').appendTo($('.objectifs-5 .adv-scores')).css({display: 'inline-block'});
+        	$('.score-6.adv').appendTo($('.objectifs-6 .adv-scores')).css({display: 'inline-block'});
+        	$('.score-7.adv').appendTo($('.objectifs-7 .adv-scores')).css({display: 'inline-block'});
+
+        	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				$('.disclaimer').show().css({display: 'flex'});
+				$('.content').hide();
+			}
+
+			$('.out-turn').click(function(){
+				$('.alert p').text('Ce n\'est pas votre tour !').css({color: '#c24338'});
+				$('.alert').show();
+				setTimeout(function(){
+					$('.alert').fadeOut(500);
+				}, 500);
+				
+			});
+
+			$(document).ready(function(){
+				setTimeout(function(){
+					TweenMax.to($('.manche'), 0.2,{transform: 'scale(1)', left: '0', yPercent: '-50%'});
+					$('.end').css({display: 'flex'}).hide().fadeIn(300);
+					setTimeout(function(){
+						$('.choose').fadeIn(200);
+					}, 200);
+				}, 1000);
+			});
+
+			$('img').on('dragstart', function(event) { event.preventDefault(); });
+			
+
+    </script>
+
+{% endblock %}

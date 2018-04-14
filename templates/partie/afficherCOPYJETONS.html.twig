@@ -1,0 +1,541 @@
+{% extends 'game.html.twig' %}
+
+{% block meta %}
+    {% if(user.id != idUserTour) %}
+        <meta http-equiv="refresh" content="10">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1>Affichage de la partie</h1>
+    <h2>Joueur:  <b> {{  user.username  }}</b></h2>
+    <h2>Adversaire: <b>{{  adversaire.username  }}</b></h2>
+    Manche: <span>{{ partie.partieManche }}</span> -
+    C'est le tour de <b>{{ tourJoueur }}</b>
+
+    <br><br>
+
+    Voici les cartes objectifs:
+    {% for objectif in partie.Objectifs %}
+        <img src="{{ asset('assets/images/carte_objectif/') }}{{ objectifs[objectif].image }}" style="width: 100px">
+    {% endfor %}
+
+    <br>
+
+    {% if user.id == joueur1.id %}
+        {% if jetonJ1.monopoleRecu != 0 %}
+            {% if jetonJ1.monopoleRecu == 1 or  jetonJ1.monopoleRecu == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 3 or  jetonJ1.monopoleRecu == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 5 or  jetonJ1.monopoleRecu == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 7 or  jetonJ1.monopoleRecu == 8 or  jetonJ1.monopoleRecu == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 10 or  jetonJ1.monopoleRecu == 11 or  jetonJ1.monopoleRecu == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 13 or  jetonJ1.monopoleRecu == 14 or  jetonJ1.monopoleRecu == 15 or jetonJ1.monopoleRecu == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleRecu == 17 or  jetonJ1.monopoleRecu == 18 or  jetonJ1.monopoleRecu == 19 or jetonJ1.monopoleRecu == 20 or jetonJ1.monopoleRecu == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.monopoleGarde1 != 0 %}
+            {% if jetonJ1.monopoleGarde1 == 1 or  jetonJ1.monopoleGarde1 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 3 or  jetonJ1.monopoleGarde1 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 5 or  jetonJ1.monopoleGarde1 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 7 or  jetonJ1.monopoleGarde1 == 8 or  jetonJ1.monopoleGarde1 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 10 or  jetonJ1.monopoleGarde1 == 11 or  jetonJ1.monopoleGarde1 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 13 or  jetonJ1.monopoleGarde1 == 14 or  jetonJ1.monopoleGarde1 == 15 or jetonJ1.monopoleGarde1 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde1 == 17 or  jetonJ1.monopoleGarde1 == 18 or  jetonJ1.monopoleGarde1 == 19 or jetonJ1.monopoleGarde1 == 20 or jetonJ1.monopoleGarde1 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.monopoleGarde2 != 0 %}
+            {% if jetonJ1.monopoleGarde2 == 1 or  jetonJ1.monopoleGarde2 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 3 or  jetonJ1.monopoleGarde2 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 5 or  jetonJ1.monopoleGarde2 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 7 or  jetonJ1.monopoleGarde2 == 8 or  jetonJ1.monopoleGarde2 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 10 or  jetonJ1.monopoleGarde2 == 11 or  jetonJ1.monopoleGarde2 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 13 or  jetonJ1.monopoleGarde2 == 14 or  jetonJ1.monopoleGarde2 == 15 or jetonJ1.monopoleGarde2 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.monopoleGarde2 == 17 or  jetonJ1.monopoleGarde2 == 18 or  jetonJ1.monopoleGarde2 == 19 or jetonJ1.monopoleGarde2 == 20 or jetonJ1.monopoleGarde2 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationRecu1 != 0 %}
+            {% if jetonJ1.negociationRecu1 == 1 or  jetonJ1.negociationRecu1 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 3 or  jetonJ1.negociationRecu1 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 5 or  jetonJ1.negociationRecu1 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 7 or  jetonJ1.negociationRecu1 == 8 or  jetonJ1.negociationRecu1 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 10 or  jetonJ1.negociationRecu1 == 11 or  jetonJ1.negociationRecu1 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 13 or  jetonJ1.negociationRecu1 == 14 or  jetonJ1.negociationRecu1 == 15 or jetonJ1.negociationRecu1 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu1 == 17 or  jetonJ1.negociationRecu1 == 18 or  jetonJ1.negociationRecu1 == 19 or jetonJ1.negociationRecu1 == 20 or jetonJ1.negociationRecu1 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationRecu2 != 0 %}
+            {% if jetonJ1.negociationRecu2 == 1 or  jetonJ1.negociationRecu2 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 3 or  jetonJ1.negociationRecu2 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 5 or  jetonJ1.negociationRecu2 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 7 or  jetonJ1.negociationRecu2 == 8 or  jetonJ1.negociationRecu2 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 10 or  jetonJ1.negociationRecu2 == 11 or  jetonJ1.negociationRecu2 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 13 or  jetonJ1.negociationRecu2 == 14 or  jetonJ1.negociationRecu2 == 15 or jetonJ1.negociationRecu2 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationRecu2 == 17 or  jetonJ1.negociationRecu2 == 18 or  jetonJ1.negociationRecu2 == 19 or jetonJ1.negociationRecu2 == 20 or jetonJ1.negociationRecu2 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationGarde1 != 0 %}
+            {% if jetonJ1.negociationGarde1 == 1 or  jetonJ1.negociationGarde1 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 3 or  jetonJ1.negociationGarde1 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 5 or  jetonJ1.negociationGarde1 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 7 or  jetonJ1.negociationGarde1 == 8 or  jetonJ1.negociationGarde1 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 10 or  jetonJ1.negociationGarde1 == 11 or  jetonJ1.negociationGarde1 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 13 or  jetonJ1.negociationGarde1 == 14 or  jetonJ1.negociationGarde1 == 15 or jetonJ1.negociationGarde1 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde1 == 17 or  jetonJ1.negociationGarde1 == 18 or  jetonJ1.negociationGarde1 == 19 or jetonJ1.negociationGarde1 == 20 or jetonJ1.negociationGarde1 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ1.negociationGarde2 != 0 %}
+            {% if jetonJ1.negociationGarde2 == 1 or  jetonJ1.negociationGarde2 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 3 or  jetonJ1.negociationGarde2 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 5 or  jetonJ1.negociationGarde2 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 7 or  jetonJ1.negociationGarde2 == 8 or  jetonJ1.negociationGarde2 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 10 or  jetonJ1.negociationGarde2 == 11 or  jetonJ1.negociationGarde2 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 13 or  jetonJ1.negociationGarde2 == 14 or  jetonJ1.negociationGarde2 == 15 or jetonJ1.negociationGarde2 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ1.negociationGarde2 == 17 or  jetonJ1.negociationGarde2 == 18 or  jetonJ1.negociationGarde2 == 19 or jetonJ1.negociationGarde2 == 20 or jetonJ1.negociationGarde2 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+    {% elseif user.id == joueur2.id %}
+        {% if jetonJ2.monopoleRecu != 0 %}
+            {% if jetonJ2.monopoleRecu == 1 or  jetonJ2.monopoleRecu == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 3 or  jetonJ2.monopoleRecu == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 5 or  jetonJ2.monopoleRecu == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 7 or  jetonJ2.monopoleRecu == 8 or  jetonJ2.monopoleRecu == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 10 or  jetonJ2.monopoleRecu == 11 or  jetonJ2.monopoleRecu == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 13 or  jetonJ2.monopoleRecu == 14 or  jetonJ2.monopoleRecu == 15 or jetonJ2.monopoleRecu == 16 %}
+                <span style="position: absolute; margin-left: 690px;"> Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleRecu == 17 or  jetonJ2.monopoleRecu == 18 or  jetonJ2.monopoleRecu == 19 or jetonJ2.monopoleRecu == 20 or jetonJ2.monopoleRecu == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.monopoleGarde1 != 0 %}
+            {% if jetonJ2.monopoleGarde1 == 1 or  jetonJ2.monopoleGarde1 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 3 or  jetonJ2.monopoleGarde1 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 5 or  jetonJ2.monopoleGarde1 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 7 or  jetonJ2.monopoleGarde1 == 8 or  jetonJ2.monopoleGarde1 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 10 or  jetonJ2.monopoleGarde1 == 11 or  jetonJ2.monopoleGarde1 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 13 or  jetonJ2.monopoleGarde1 == 14 or  jetonJ2.monopoleGarde1 == 15 or jetonJ2.monopoleGarde1 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde1 == 17 or  jetonJ2.monopoleGarde1 == 18 or  jetonJ2.monopoleGarde1 == 19 or jetonJ2.monopoleGarde1 == 20 or jetonJ2.monopoleGarde1 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.monopoleGarde2 != 0 %}
+            {% if jetonJ2.monopoleGarde2 == 1 or  jetonJ2.monopoleGarde2 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 3 or  jetonJ2.monopoleGarde2 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 5 or  jetonJ2.monopoleGarde2 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 7 or  jetonJ2.monopoleGarde2 == 8 or  jetonJ2.monopoleGarde2 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 10 or  jetonJ2.monopoleGarde2 == 11 or  jetonJ2.monopoleGarde2 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 13 or  jetonJ2.monopoleGarde2 == 14 or  jetonJ2.monopoleGarde2 == 15 or jetonJ2.monopoleGarde2 == 16 %}
+                <span style="position: absolute; margin-left: 6900px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.monopoleGarde2 == 17 or  jetonJ2.monopoleGarde2 == 18 or  jetonJ2.monopoleGarde2 == 19 or jetonJ2.monopoleGarde2 == 20 or jetonJ2.monopoleGarde2 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationRecu1 != 0 %}
+            {% if jetonJ2.negociationRecu1 == 1 or  jetonJ2.negociationRecu1 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 3 or  jetonJ2.negociationRecu1 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 5 or  jetonJ2.negociationRecu1 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 7 or  jetonJ2.negociationRecu1 == 8 or  jetonJ2.negociationRecu1 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 10 or  jetonJ2.negociationRecu1 == 11 or  jetonJ2.negociationRecu1 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 13 or  jetonJ2.negociationRecu1 == 14 or  jetonJ2.negociationRecu1 == 15 or jetonJ2.negociationRecu1 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu1 == 17 or  jetonJ2.negociationRecu1 == 18 or  jetonJ2.negociationRecu1 == 19 or jetonJ2.negociationRecu1 == 20 or jetonJ2.negociationRecu1 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationRecu2 != 0 %}
+            {% if jetonJ2.negociationRecu2 == 1 or  jetonJ2.negociationRecu2 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 3 or  jetonJ2.negociationRecu2 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 5 or  jetonJ2.negociationRecu2 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 7 or  jetonJ2.negociationRecu2 == 8 or  jetonJ2.negociationRecu2 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 10 or  jetonJ2.negociationRecu2 == 11 or  jetonJ2.negociationRecu2 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 13 or  jetonJ2.negociationRecu2 == 14 or  jetonJ2.negociationRecu2 == 15 or jetonJ2.negociationRecu2 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationRecu2 == 17 or  jetonJ2.negociationRecu2 == 18 or  jetonJ2.negociationRecu2 == 19 or jetonJ2.negociationRecu2 == 20 or jetonJ2.negociationRecu2 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationGarde1 != 0 %}
+            {% if jetonJ2.negociationGarde1 == 1 or  jetonJ2.negociationGarde1 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 3 or  jetonJ2.negociationGarde1 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 5 or  jetonJ2.negociationGarde1 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 7 or  jetonJ2.negociationGarde1 == 8 or  jetonJ2.negociationGarde1 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 10 or  jetonJ2.negociationGarde1 == 11 or  jetonJ2.negociationGarde1 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 13 or  jetonJ2.negociationGarde1 == 14 or  jetonJ2.negociationGarde1 == 15 or jetonJ2.negociationGarde1 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde1 == 17 or  jetonJ2.negociationGarde1 == 18 or  jetonJ2.negociationGarde1 == 19 or jetonJ2.negociationGarde1 == 20 or jetonJ2.negociationGarde1 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+        {% if jetonJ2.negociationGarde2 != 0 %}
+            {% if jetonJ2.negociationGarde2 == 1 or  jetonJ2.negociationGarde2 == 2 %}
+                <span style="position: absolute; margin-left: 170px;">Obj1 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 3 or  jetonJ2.negociationGarde2 == 4 %}
+                <span style="position: absolute; margin-left: 270px;">Obj2 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 5 or  jetonJ2.negociationGarde2 == 6 %}
+                <span style="position: absolute; margin-left: 370px;">Obj3 - 2 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 7 or  jetonJ2.negociationGarde2 == 8 or  jetonJ2.negociationGarde2 == 9 %}
+                <span style="position: absolute; margin-left: 470px;">Obj4 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 10 or  jetonJ2.negociationGarde2 == 11 or  jetonJ2.negociationGarde2 == 12 %}
+                <span style="position: absolute; margin-left: 580px;">Obj5 - 3 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 13 or  jetonJ2.negociationGarde2 == 14 or  jetonJ2.negociationGarde2 == 15 or jetonJ2.negociationGarde2 == 16 %}
+                <span style="position: absolute; margin-left: 690px;">Obj6 - 4 pts</span>
+            {% endif %}
+            {% if jetonJ2.negociationGarde2 == 17 or  jetonJ2.negociationGarde2 == 18 or  jetonJ2.negociationGarde2 == 19 or jetonJ2.negociationGarde2 == 20 or jetonJ2.negociationGarde2 == 21 %}
+                <span style="position: absolute; margin-left: 800px;">Obj7 - 5 pts</span>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    <br><br>
+
+    Voici la pioche:
+    <img src="{{ asset('assets/images/dos_pioche/carte_back.png') }}" style="width: 100px">
+
+    <br>
+
+    {% if partieManche==2 or partieManche == 3 %}
+        {% if user.id == joueur1.id %}
+            <b>{{ user.username }} : {{ scoreJ1 }}</b>
+            <b>{{ adversaire.username }} : {{ scoreJ2 }}</b>
+        {% elseif user.id == joueur2.id%}
+            <b>{{ user.username }} : {{ scoreJ2 }}</b>
+            <b>{{ adversaire.username }} : {{ scoreJ1 }}</b>
+        {% endif %}
+    {% endif %}
+
+    <br><br>
+
+    <!--Formulaires pour les différentes actions-->
+    {% if(user.id == idUserTour) %}
+        {% if(negociationUser != 0) and (monopoleUser != 0) and (abandon != 0) and (pacte != 0) and (partieFinie == 13)%}
+            {% if user.id == joueur1.id %}
+                {% if scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+                    {{ user.username }} a gagné !
+                {% elseif scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+                    {{ joueur2.username }} a gagné !
+                {% else %}
+                    <p>LA MANCHE EST TERMINÉE, EN ATTENTE DE VOTRE ADVERSAIRE</p>
+                {% endif %}
+            {% elseif user.id == joueur2.id %}
+                {% if scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+                    {{ user.username }}, vous avez gagné !
+                {% elseif scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+                    {{ joueur1.username }}, a gagné !
+                {% else %}
+                    <p>LA MANCHE EST TERMINÉE, EN ATTENTE DE VOTRE ADVERSAIRE</p>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% if(etatMonopole ==1 and nbCarteMonopole == 3) %}
+                <form action="{{ path('valid_monopole', {'id' : partie.id} ) }}" method="post">
+                    <div id="radioMonopole" style="position:absolute; margin-top: 50px;">
+                        {% for carteM in carteMonopole %}
+                            <input type="radio" value="{{ carteM }}" style="margin-left: 45px; margin-right: 42px;" name="carteMonopole" required>
+                        {% endfor %}
+                    </div>
+                    {% for test in allCarteMonopole %}
+                        {% for test2 in test %}
+                            <img src="{{ asset('assets/images/carte_objet/') }}{{ test2.image }}" style="width: 100px">
+                        {% endfor %}
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary" name="id" value="{{ partie.id }}">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Choisir la carte
+                    </button>
+                </form>
+            {% endif %}
+
+            {% if(etatNegociation ==1 and nbCarteNegociation == 4) %}
+                <form action="{{ path('valid_negociation', {'id' : partie.id} ) }}" method="post">
+                <span id="paire1">
+                    <div id="radioNegociation" style="position:absolute; margin-top: 50px;">
+                        <input type="radio" value="paire1" style="margin-left: 45px; margin-right: 42px;" name="carteNegociation" required>
+                    </div>
+                    {% for test in paire1Negociation %}
+                        {% for test2 in test %}
+                            <img src="{{ asset('assets/images/carte_objet/') }}{{ test2.image }}" style="width: 100px">
+                        {% endfor %}
+                    {% endfor %}
+                </span>
+                    <span id="paire2">
+                        <input type="radio" value="paire2" style="position: absolute; margin-left: 70px; margin-top: 55px;" name="carteNegociation" required>
+                        {% for test in paire2Negociation %}
+                            {% for test2 in test %}
+                                <img src="{{ asset('assets/images/carte_objet/') }}{{ test2.image }}" style="width: 100px">
+                            {% endfor %}
+                        {% endfor %}
+                </span>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="id" value="{{ partie.id }}">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Choisir une paire
+                    </button>
+                </form>
+            {% endif %}
+
+            <div id="actions">
+            {% if(pacte == 0) %}
+                <form action="{{ path('action_pacte', {'id' : partie.id}) }}" method="post">
+                    <fieldset>
+                        <input type="text" id="cartePacte" name="cartePacte" placeholder="Saisir l'ID de la carte" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Pacte
+                        </button>
+                    </fieldset>
+                </form>
+            {% else %}
+                <p>Vous avez déjà utilisé l'action Pacte</p>
+            {% endif %}
+
+            <br>
+
+            {% if(abandon == 0) %}
+                <form action="{{ path('action_abandon', {'id' : partie.id}) }}" method="post"> <!-- path('action_abandon') -->
+                    <fieldset>
+                        <input type="text" id="carteAbandon1" name="carteAbandon1" placeholder="Saisir l'ID de la 1ère carte" required>
+                        <input type="text" id="carteAbandon2" name="carteAbandon2" placeholder="Saisir l'ID de la 2ème carte" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Abandon
+                        </button>
+                    </fieldset>
+                </form>
+            {% else %}
+                <p>Vous avez déjà utilisé l'action Abandon</p>
+            {% endif %}
+
+            <br>
+            {% if(monopoleUser == 0) %}
+                <form action="{{ path('action_monopole', {'id' : partie.id}) }}" method="post"> <!-- path('action_monopole') -->
+                    <fieldset>
+                        <input type="text" id="carteMonopole1" name="carteMonopole1" placeholder="Saisir l'ID de la 1ère carte" required>
+                        <input type="text" id="carteMonopole2" name="carteMonopole2" placeholder="Saisir l'ID de la 2ème carte" required>
+                        <input type="text" id="carteMonopole3" name="carteMonopole3" placeholder="Saisir l'ID de la 3ème carte" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Monopole
+                        </button>
+                    </fieldset>
+                </form>
+            {% else %}
+                <p>Vous avez déjà utilisé l'action Monopole</p>
+            {% endif %}
+
+            <br>
+            {% if(negociationUser == 0) %}
+                <form action="{{ path('action_negociation', {'id': partie.id}) }}" method="post"> <!-- path('action_negociation') -->
+                    <fieldset>
+                        <input type="text" id="carteNegociation1" name="carteNegociation1" placeholder="Paire 1 - 1er ID" required>
+                        <input type="text" id="carteNegociation2" name="carteNegociation2" placeholder="Paire 1 - 2ème ID" required>
+                        &nbsp&nbsp&nbsp
+                        <input type="text" id="carteNegociation3" name="carteNegociation3" placeholder="Paire 2 - 1er ID" required>
+                        <input type="text" id="carteNegociation4" name="carteNegociation4" placeholder="Paire 2 - 2ème ID" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Négociation
+                        </button>
+                    </fieldset>
+                </form>
+            {% else %}
+                <p>Vous avez déjà utilisé l'action Négociation</p>
+            {% endif %}
+        {% endif %}
+
+    {% elseif(negociationUser != 0) and (monopoleUser != 0) and (abandon != 0) and (pacte != 0) and (partieFinie == 13)%}
+        {% if user.id == joueur1.id %}
+            {% if scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+                {{ user.username }} a gagné !
+            {% elseif scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+                {{ joueur2.username }} a gagné !
+            {% else %}
+                <p>LA MANCHE EST TERMINÉE, EN ATTENTE DE VOTRE ADVERSAIRE</p>
+            {% endif %}
+        {% elseif user.id == joueur2.id %}
+            {% if scoreJ2 >= 11 and scoreJ2 > scoreJ1 %}
+                {{ user.username }}, vous avez gagné !
+            {% elseif scoreJ1 >= 11 and scoreJ1 > scoreJ2 %}
+                {{ joueur1.username }} a gagné !
+            {% else %}
+                <p>LA MANCHE EST TERMINÉE, EN ATTENTE DE VOTRE ADVERSAIRE</p>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <p>Ce n'est pas votre tour !</p>
+    {% endif %}
+    </div>
+
+
+    <br><br>
+
+
+    Voici vos cartes en main:
+    {% if(user.id == joueur1.id) %}
+        {% for carte in partie.J1Main %}
+            {{ objets[carte].id }}
+            <img class="card-face" src="{{ asset('assets/images/carte_objet/') }}{{ objets[carte].image }}" style="width: 100px">
+        {% endfor %}
+    {% elseif(user.id == joueur2.id) %}
+        {% for carte in partie.J2Main %}
+            {{ objets[carte].id }}
+            <img class="card-face" src="{{ asset('assets/images/carte_objet/') }}{{ objets[carte].image }}" style="width: 100px">
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

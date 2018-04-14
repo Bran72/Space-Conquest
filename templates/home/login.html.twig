@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>Space Conquest</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{{asset('assets/css/login_reg.css')}}">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+	<link rel="icon" href="{{ asset('assets/images/favicon.ico') }}">
+</head>
+<body>
+	<div class="no-scroll">
+		<div class="log">
+			<div class="part-1">
+				<div class="part-2">
+					<a class="active-button login" href="">
+						<p>SE CONNECTER</p>
+						<img src="{{asset('assets/images/red_button.svg')}}">
+					</a>
+					<a class="register" href="{{ path('user_registration') }}">
+						<p>INSCRIPTION</p>
+						<img src="{{asset('assets/images/yellow_button.svg')}}">
+					</a>
+				</div>
+				<form action="{{ path('security_login') }}" method="post">
+                    {% if error %}
+						<li style="margin-bottom: 15px;">Nom d'utilisateur ou mot de passe incorrect</li>
+                    {% endif %}
+					<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" required>
+					</div>
+					<div class="form-group">
+					<label for="password">Mot de passe</label>
+					<input type="password" id="password" name="_password" class="form-control" required>
+					</div>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<div class="submit">
+						<input type="submit" value="JOUER">
+						<img src="{{asset('assets/images/validate_button.svg')}}">
+					</div>
+				</form>
+				<a href="{{  path('user_forget') }}" class="forgot">Mot de passe oublié ?</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="disclaimer">
+		<img class="logo" src="{{asset('assets/images/logo.svg')}}">
+		<p>Désolé, Space Conquest n'est pas disponible sur votre plateforme.</p>
+		<p>Rejoignez nous sur PC et Mac.</p>
+		<div class="share">
+			<a class="fb-share">
+				<img src="{{asset('assets/images/facebook-logo-button.svg')}}">
+			</a>
+			<a class="tw-share">
+				<img src="{{asset('assets/images/twitter-logo-button.svg')}}">
+			</a>
+		</div>
+	</div>
+
+	<div id="particles-js"></div>
+	<script src="{{asset('assets/js/jquery-3.1.1.min.js')}}"></script>
+	<script src="{{asset('assets/js/jquery-ui.min.js')}}"></script>
+	<script src="{{asset('assets/js/particles.js')}}"></script>
+	<script src="{{asset('assets/js/particles.json')}}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSPlugin.min.js"></script>
+	<script type="text/javascript">
+		
+		$(document).ready(function(){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				$('.disclaimer').css({display: 'flex'});
+				$('.log').hide();
+			}
+		});
+
+	</script>
+</body>
+</html>

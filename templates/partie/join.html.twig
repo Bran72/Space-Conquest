@@ -1,0 +1,31 @@
+{% extends 'home.html.twig' %}
+
+{% block body %}
+    <h1>Bienvenue {{ user.username }} !</h1>
+    <h3>Rejoindre une partie</h3>
+
+    <!--Ajouter le changement de mot de passe-->
+
+
+
+    <form method="post" action="{{ path('rejoindre') }}">
+        <div>
+            Choisissez la partie à rejoindre:
+            <select name="partie" required>
+                {% for partie in parties %}
+                    {% if(partie.partieGagne !=1) %}
+                        <option value="{{ partie.id }}">Partie entre {{ partie.joueur1 }} et {{ partie.joueur2 }} - Tour {{ partie.partieFinie }} - Manche {{ partie.partieManche }} - Partie n°{{ partie.id }}</option>
+                        {{ partie.id }}
+                    {% else %}
+                        <p>Soit les parties sont finies, soit ce n'est pas votre tour !</p>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Rejoindre la partie">
+        </div>
+    </form>
+
+    <br><br><br>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'admin.html.twig' %}
+
+{% block style %}
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h3 style="text-align: center">Gérer les parties</h3>
+
+
+    <table style="text-align: center">
+        <thead>
+        <tr>
+            <th>N° de partie</th>
+            <th>Joueurs</th>
+            <th>Score joueur</th>
+            <th>Score adversaire</th>
+            <th>Manche</th>
+            <th>Gagné</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for parties in allParties %}
+        <tr>
+            <td>{{ parties.id }}</td>
+            <td>{{ parties.joueur1 }} <b>VS</b> {{ parties.joueur2 }}</td>
+            <td>{{ parties.scoreJ1 }}</td>
+            <td>{{ parties.scoreJ2 }}</td>
+            <td>{{ parties.partieManche }}</td>
+            {% if parties.partieGagne == 1 %}
+                <td>Oui</td>
+            {% else %}
+                <td>Non</td>
+            {% endif %}
+            <form action="{{ path('delete_partie') }}" method="post">
+                <td><button type="submit" class="btn btn-primary" name="idPartie" value="{{ parties.id }}">Supprimer</button></td>
+            </form>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
