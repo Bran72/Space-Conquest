@@ -47,7 +47,6 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotBlank(message="Ajouter une image jpg")
      * @Assert\File(mimeTypes={ "image/jpeg", "image/png", "image/gif" })
      */
     private $image;
